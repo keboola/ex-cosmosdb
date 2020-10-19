@@ -31,13 +31,9 @@ class Extractor
     public function extract(): void
     {
         $process = $this->processFactory->create(sprintf('node %s/NodeJs/extractor.js', __DIR__));
-        /** @var ReadableStreamInterface $jsonDocuments */
-        $jsonDocuments = $process->stdout;
         $decoder = new JsonDecoder();
-        $decoder->processStream($jsonDocuments, function (iterable $documents): void {
-            foreach ($documents as $document) {
-                $this->writeToCsv($document);
-            }
+        $decoder->processStream($process->stdout, function (array &$document): void {
+            $this->writeToCsv($document);
         });
 
         $this->loop->run();

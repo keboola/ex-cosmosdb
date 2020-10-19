@@ -2,3 +2,5 @@ parameters:
     checkMissingIterableValueType: false
     ignoreErrors:
         - '#Cannot call method end\(\) on Symfony\\Component\\Config\\Definition\\Builder\\NodeParentInterface\|null.#'
+        - '#expects React\\Stream\\ReadableStreamInterface, React\\Stream\\ReadableStreamInterface\|.*#'
+        - '#Call to an undefined method Psr\\Log\\LoggerInterface::hasDebugThatMatches\(\).#'

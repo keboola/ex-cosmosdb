@@ -37,7 +37,7 @@ class ProcessFactory
         // Handle process exit
         $process->on('exit', function (int $exitCode) use ($cmd): void {
             if ($exitCode === 0) {
-                $this->logger->info(sprintf('Process "%s" completed successfully.', $cmd));
+                $this->logger->debug(sprintf('Process "%s" completed successfully.', $cmd));
                 return;
             }
 

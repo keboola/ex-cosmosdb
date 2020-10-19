@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Extractor;
 
+use Generator;
 use React\Stream\ReadableStreamInterface;
 
 /**
@@ -17,25 +18,35 @@ class JsonDecoder
 
     private string $buffer = '';
 
-    public function processChunk(string $chunk): iterable
+    public function processChunk(string $chunk): array
     {
         $this->buffer .= $chunk;
-        return $this->parse();
+        return iterator_to_array($this->parse());
     }
 
     public function processStream(ReadableStreamInterface $stream, callable $worker): void
     {
         // New data is processed when it arrives
-        $stream->on('data', fn(string $chunk) => $worker($this->processChunk($chunk)));
+        $stream->on('data', function (string $chunk) use ($worker): void {
+            foreach ($this->processChunk($chunk) as &$document) {
+                $worker($document);
+            }
+        });
+
         // At the end, the rest of the buffer is parsed
-        $stream->on('end', fn() => $worker($this->processChunk(self::DELIMITER)));
+        $stream->on('end', function () use ($worker): void {
+            foreach ($this->processChunk(self::DELIMITER) as &$document) {
+                $worker($document);
+            }
+        });
+
         // Throw exception when it occurs
         $stream->on('error', function (\Throwable $e): void {
             throw $e;
         });
     }
 
-    protected function parse(): iterable
+    protected function parse(): Generator
     {
         // Keep parsing while the delimiter has been found
         while (($delimiter = strpos($this->buffer, self::DELIMITER)) !== false) {
@@ -44,7 +55,9 @@ class JsonDecoder
             $this->buffer = (string) substr($this->buffer, $delimiter + strlen(self::DELIMITER));
 
             // Decode JSON document, throw the JsonException on the error
-            yield json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            if (trim($json) !== '') {
+                yield json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+            }
         }
     }
 }
