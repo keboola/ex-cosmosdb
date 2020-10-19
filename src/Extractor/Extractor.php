@@ -8,7 +8,6 @@ use CosmosDbExtractor\Config;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\Factory as EventLoopFactory;
 use React\EventLoop\LoopInterface;
-use React\Stream\ReadableStreamInterface;
 
 class Extractor
 {

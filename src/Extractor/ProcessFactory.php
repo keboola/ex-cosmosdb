@@ -8,7 +8,6 @@ use CosmosDbExtractor\Exception\ProcessException;
 use Psr\Log\LoggerInterface;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
-use React\Stream\ReadableStreamInterface;
 
 class ProcessFactory
 {
@@ -28,10 +27,8 @@ class ProcessFactory
         $process->start($this->loop);
 
         // Log process stderr output as warning
-        /** @var ReadableStreamInterface $stderr */
-        $stderr = $process->stderr;
-        $stderr->on('data', function (string $chunk): void {
-            $this->logger->warning($chunk);
+        $process->stderr->on('data', function (string $chunk): void {
+            $this->logger->warning(trim($chunk));
         });
 
         // Handle process exit

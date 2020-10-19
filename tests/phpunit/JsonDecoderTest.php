@@ -6,31 +6,16 @@ namespace CosmosDbExtractor\Tests;
 
 use JsonException;
 use CosmosDbExtractor\Extractor\JsonDecoder;
-use CosmosDbExtractor\Extractor\ProcessFactory;
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
-use Psr\Log\Test\TestLogger;
-use React\EventLoop\Factory;
-use React\EventLoop\LoopInterface;
 
-class JsonDecoderTest extends TestCase
+class JsonDecoderTest extends AbstractTestCase
 {
     private JsonDecoder $jsonDecoder;
-
-    private LoggerInterface $logger;
-
-    private LoopInterface $loop;
-
-    private ProcessFactory $processFactory;
 
     protected function setUp(): void
     {
         parent::setUp();
         $this->jsonDecoder = new JsonDecoder();
-        $this->logger = new TestLogger();
-        $this->loop = Factory::create();
-        $this->processFactory = new ProcessFactory($this->logger, $this->loop);
     }
 
     /**
@@ -39,7 +24,7 @@ class JsonDecoderTest extends TestCase
     public function testValidJson(string $script, array $expectedDocuments): void
     {
         $parsedDocuments = [];
-        $process = $this->processFactory->create(sprintf('node %s/fixtures/%s', __DIR__, $script));
+        $process = $this->createScriptProcess($script);
         $this->jsonDecoder->processStream($process->stdout, function (array &$document) use (&$parsedDocuments): void {
             $parsedDocuments[] = $document;
         });
@@ -54,7 +39,7 @@ class JsonDecoderTest extends TestCase
      */
     public function testInvalidJson(string $script): void
     {
-        $process = $this->processFactory->create(sprintf('node %s/fixtures/%s', __DIR__, $script));
+        $process = $this->createScriptProcess($script);
         $this->jsonDecoder->processStream($process->stdout, function (): void {
         });
 
