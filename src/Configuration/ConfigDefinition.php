@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CosmosDbExtractor;
+namespace CosmosDbExtractor\Configuration;
 
 use Keboola\Component\Config\BaseConfigDefinition;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
