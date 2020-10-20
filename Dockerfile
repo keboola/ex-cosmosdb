@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         locales \
         unzip \
         nodejs \
+        npm \
         libssl-dev \
         libevent-dev \
 	&& rm -r /var/lib/apt/lists/* \
