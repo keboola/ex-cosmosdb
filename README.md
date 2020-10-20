@@ -17,6 +17,7 @@ git clone https://github.com/keboola/my-component
 cd my-component
 docker-compose build
 docker-compose run --rm dev composer install --no-scripts
+docker-compose run --rm dev npm install
 ```
 
 Run the test suite using this command:
