@@ -1,10 +1,16 @@
 {
-    "name": "keboola/my-component",
-    "description": "MyComponent description",
+    "name": "keboola/ex-cosmosdb",
+    "description": "CosmosDB extractor for Keboola Connection.",
     "license": "MIT",
     "require": {
         "php": "^7.4",
-        "keboola/php-component": "^8.1"
+        "ext-event": "*",
+        "ext-pcntl": "*",
+        "ext-json": "*",
+        "halaxa/json-machine": "^0.3.3",
+        "keboola/php-component": "^8.1",
+        "react/child-process": "^0.6.1",
+        "react/event-loop": "^1.1"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
@@ -17,13 +23,13 @@
     },
     "autoload": {
         "psr-4": {
-            "MyComponent\\": "src/"
+            "CosmosDbExtractor\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "MyComponent\\Tests\\": "tests/phpunit/",
-            "MyComponent\\FunctionalTests\\": "tests/functional/"
+            "CosmosDbExtractor\\Tests\\": "tests/phpunit/",
+            "CosmosDbExtractor\\FunctionalTests\\": "tests/functional/"
         }
     },
     "scripts": {

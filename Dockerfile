@@ -14,11 +14,22 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         git \
         locales \
         unzip \
+        nodejs \
+        libssl-dev \
+        libevent-dev \
 	&& rm -r /var/lib/apt/lists/* \
 	&& sed -i 's/^# *\(en_US.UTF-8\)/\1/' /etc/locale.gen \
 	&& locale-gen \
 	&& chmod +x /tmp/composer-install.sh \
 	&& /tmp/composer-install.sh
+
+# Install ext-event dependencies
+RUN docker-php-ext-install sockets \
+    && docker-php-ext-install pcntl
+
+# Install ext-event for react-php
+RUN pecl install event \
+    && docker-php-ext-enable event
 
 ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8
