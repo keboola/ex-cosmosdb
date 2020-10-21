@@ -36,9 +36,19 @@ class Extractor
 
     public function extract(): void
     {
+        // Register a new NodeJs process to event loop.
+        // STDOUT output is logged as info message, and STDERR as warning.
+        // If the process fails, a ProcessException is thrown.
+        // See ProcessFactory class for more info.
         $process = $this->createNodeJsProcess('extract.js');
+
+        // We use separated file descriptor for JSON documents stream.
+        $jsonPipe = $process->pipes[ProcessFactory::JSON_STREAM_FD];
+
+        // JSON documents separated by delimiter (see JsonDecoder) are asynchronously read and decoded
+        // from the process output (on the separated file descriptor) and converted to CSV.
         $decoder = new JsonDecoder();
-        $decoder->processStream($process->stdout, function (array &$document): void {
+        $decoder->processStream($jsonPipe, function (array &$document): void {
             $this->writeToCsv($document);
         });
 
@@ -53,6 +63,6 @@ class Extractor
 
     protected function createNodeJsProcess(string $script): Process
     {
-        return $this->processFactory->create(sprintf('node %s/NodeJs/%s.js', __DIR__, $script));
+        return $this->processFactory->create(sprintf('node %s/NodeJs/%s', __DIR__, $script));
     }
 }

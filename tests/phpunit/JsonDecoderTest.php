@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Tests;
 
+use CosmosDbExtractor\Extractor\ProcessFactory;
 use JsonException;
 use CosmosDbExtractor\Extractor\JsonDecoder;
 use PHPUnit\Framework\Assert;
@@ -25,7 +26,8 @@ class JsonDecoderTest extends AbstractTestCase
     {
         $parsedDocuments = [];
         $process = $this->createScriptProcess($script);
-        $this->jsonDecoder->processStream($process->stdout, function (array &$document) use (&$parsedDocuments): void {
+        $jsonStream = $process->pipes[ProcessFactory::JSON_STREAM_FD];
+        $this->jsonDecoder->processStream($jsonStream, function (array &$document) use (&$parsedDocuments): void {
             $parsedDocuments[] = $document;
         });
 
@@ -40,7 +42,8 @@ class JsonDecoderTest extends AbstractTestCase
     public function testInvalidJson(string $script): void
     {
         $process = $this->createScriptProcess($script);
-        $this->jsonDecoder->processStream($process->stdout, function (): void {
+        $jsonStream = $process->pipes[ProcessFactory::JSON_STREAM_FD];
+        $this->jsonDecoder->processStream($jsonStream, function (): void {
         });
 
         $this->expectException(JsonException::class);

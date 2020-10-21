@@ -1,4 +1,5 @@
-// Todo
-console.log('{"abc": "xyz"}');
-console.log("\n---\n");
-console.log('{"123": "345"}');
+const jsonStream = require('./jsonStream.js');
+
+jsonStream.write("{\"abc\": \"xyz\"}\n");
+jsonStream.write("\n---\n");
+jsonStream.write("{\"123\": \"345\"}\n");

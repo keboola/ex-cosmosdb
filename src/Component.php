@@ -26,7 +26,7 @@ class Component extends BaseComponent
     protected function getSyncActions(): array
     {
         return [
-            self::ACTION_TEST_CONNECTION => 'handleTestConnection'
+            self::ACTION_TEST_CONNECTION => 'handleTestConnection',
         ];
     }
 

@@ -14,6 +14,10 @@ class ProcessFactoryTest extends AbstractTestCase
         $this->createScriptProcess('stdoutAndStderr.js');
         $this->loop->run();
 
+        Assert::assertTrue($this->logger->hasInfoThatContains('stdout1'));
+        Assert::assertTrue($this->logger->hasInfoThatContains('stdout2'));
+        Assert::assertTrue($this->logger->hasInfoThatContains('stdout3'));
+        Assert::assertTrue($this->logger->hasInfoThatContains('stdout4'));
         Assert::assertTrue($this->logger->hasWarningThatContains('stderr1'));
         Assert::assertTrue($this->logger->hasWarningThatContains('stderr2'));
         Assert::assertTrue($this->logger->hasDebugThatMatches('~Process ".*" completed successfully.~'));

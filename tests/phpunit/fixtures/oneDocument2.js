@@ -1,4 +1,6 @@
-console.log('{"a": "b", "c": "d"}');
+const jsonStream = require('./../../../src/Extractor/NodeJs/jsonStream.js');
+
+jsonStream.write('{"a": "b", "c": "d"}');
 // Json Decoder must be foolproof, try an delimiter on the end
-console.log('---');
-console.log(' ');
+jsonStream.write("\n---\n");
+jsonStream.write(' ');
