@@ -6,6 +6,7 @@ namespace CosmosDbExtractor\Extractor;
 
 use CosmosDbExtractor\Configuration\Config;
 use Psr\Log\LoggerInterface;
+use React\ChildProcess\Process;
 use React\EventLoop\Factory as EventLoopFactory;
 use React\EventLoop\LoopInterface;
 
@@ -27,9 +28,15 @@ class Extractor
         $this->processFactory = new ProcessFactory($this->logger, $this->loop);
     }
 
+    public function testConnection(): void
+    {
+        $process = $this->createNodeJsProcess('testConnection.js');
+        $this->loop->run();
+    }
+
     public function extract(): void
     {
-        $process = $this->processFactory->create(sprintf('node %s/NodeJs/extractor.js', __DIR__));
+        $process = $this->createNodeJsProcess('extract.js');
         $decoder = new JsonDecoder();
         $decoder->processStream($process->stdout, function (array &$document): void {
             $this->writeToCsv($document);
@@ -42,5 +49,10 @@ class Extractor
     {
         // TODO
         var_dump($document);
+    }
+
+    protected function createNodeJsProcess(string $script): Process
+    {
+        return $this->processFactory->create(sprintf('node %s/NodeJs/%s.js', __DIR__, $script));
     }
 }
