@@ -7,11 +7,11 @@ async function sleep() {
 (async () => {
     jsonStream.write('{"a": "1", "c": "d"}');
     await sleep();
-    jsonStream.write('---');
+    jsonStream.write("\n---\n");
     jsonStream.write('{"a": "2", "c": "d"}');
-    jsonStream.write('---');
+    jsonStream.write("\n---\n");
     jsonStream.write('{"a": "3", "c"....'); // <<<<<<<<<<<<<<<<
     await sleep();
-    jsonStream.write('---');
+    jsonStream.write("\n---\n");
     jsonStream.write('{"a": "4", "c": "d"}');
 })();
