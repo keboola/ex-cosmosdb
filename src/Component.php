@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor;
 
+use CosmosDbExtractor\Configuration\Config;
+use CosmosDbExtractor\Configuration\ConfigDefinition;
 use Keboola\Component\BaseComponent;
-use Keboola\Component\Config\BaseConfig;
 use CosmosDbExtractor\Extractor\Extractor;
 use Psr\Log\LoggerInterface;
 

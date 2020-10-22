@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Extractor;
 
-use CosmosDbExtractor\Config;
+use CosmosDbExtractor\Configuration\Config;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\Factory as EventLoopFactory;
 use React\EventLoop\LoopInterface;
