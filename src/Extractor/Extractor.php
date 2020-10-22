@@ -9,7 +9,6 @@ use CosmosDbExtractor\Exception\ApplicationException;
 use CosmosDbExtractor\Exception\ProcessException;
 use CosmosDbExtractor\Exception\UserException;
 use Psr\Log\LoggerInterface;
-use React\ChildProcess\Process;
 use React\EventLoop\Factory as EventLoopFactory;
 use React\EventLoop\LoopInterface;
 
@@ -99,7 +98,9 @@ class Extractor
     protected function getTestConnectionEnv(): array
     {
         return [
-
+            'ENDPOINT' => $this->config->getEndpoint(),
+            'KEY' => $this->config->getKey(),
+            'DATABASE_ID' => $this->config->getDatabaseId(),
         ];
     }
 

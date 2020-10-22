@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c806aae263794a4231f171791a7d3420",
+    "content-hash": "ec3fd429cbfd58b30cabeba78ead3955",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -1126,19 +1126,20 @@
         },
         {
             "name": "keboola/datadir-tests",
-            "version": "4.0.2",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/datadir-tests.git",
-                "reference": "b01856c771760331b50a082f8b6cb2557632c5bc"
+                "reference": "9b2bf6d1495973e43b48a267469cb990dfe44520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/datadir-tests/zipball/b01856c771760331b50a082f8b6cb2557632c5bc",
-                "reference": "b01856c771760331b50a082f8b6cb2557632c5bc",
+                "url": "https://api.github.com/repos/keboola/datadir-tests/zipball/9b2bf6d1495973e43b48a267469cb990dfe44520",
+                "reference": "9b2bf6d1495973e43b48a267469cb990dfe44520",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "keboola/php-temp": "^2.0",
                 "php": "^7.3",
                 "phpunit/phpunit": "^9.0",
@@ -1162,7 +1163,7 @@
                 "MIT"
             ],
             "description": "Tool for functional testing of Keboola Connection components",
-            "time": "2020-03-19T12:08:12+00:00"
+            "time": "2020-09-10T12:31:35+00:00"
         },
         {
             "name": "keboola/php-temp",

@@ -1,8 +1,13 @@
 const Extractor = require('./lib/Extractor.js');
 const UserError = require("./lib/UserError.js");
+const ApplicationError = require("./lib/ApplicationError.js");
 
-const extractor = new Extractor();
-extractor.testConnection().catch((error) => {
+async function main() {
+    const extractor = new Extractor();
+    await extractor.testConnection()
+}
+
+main().catch((error) => {
     // User error
     if (error instanceof UserError) {
         console.error(error.message)
@@ -10,7 +15,7 @@ extractor.testConnection().catch((error) => {
     }
 
     // Application error
-    console.error(error);
+    console.error(error instanceof ApplicationError ? error.message : error);
     process.exit(2);
 });
 

@@ -4,7 +4,7 @@
     "db": {
       "endpoint": "%env(string:ENDPOINT)%",
       "#key": "%env(string:KEY)%",
-      "databaseId": "%env(string:DATABASE_ID)%"
+      "databaseId": "invalid-database"
     }
   }
 }

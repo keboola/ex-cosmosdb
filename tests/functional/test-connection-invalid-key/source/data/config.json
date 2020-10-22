@@ -3,7 +3,7 @@
   "parameters": {
     "db": {
       "endpoint": "%env(string:ENDPOINT)%",
-      "#key": "%env(string:KEY)%",
+      "#key": "invalidKey",
       "databaseId": "%env(string:DATABASE_ID)%"
     }
   }

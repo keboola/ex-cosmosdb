@@ -2,7 +2,7 @@
   "action": "testConnection",
   "parameters": {
     "db": {
-      "endpoint": "%env(string:ENDPOINT)%",
+      "endpoint": "invalid endpoint",
       "#key": "%env(string:KEY)%",
       "databaseId": "%env(string:DATABASE_ID)%"
     }

@@ -5,3 +5,7 @@ services:
     volumes:
       - ./:/code
       - ./data:/data
+    environment:
+      - ENDPOINT
+      - KEY
+      - DATABASE_ID
