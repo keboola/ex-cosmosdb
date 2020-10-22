@@ -11,7 +11,7 @@ class ProcessFactoryTest extends AbstractTestCase
 {
     public function testSuccessfulProcess(): void
     {
-        $process = $this->createScriptProcess('stdoutAndStderr.js');
+        $process = $this->createScriptProcess('process-factory/stdoutAndStderr.js');
         $process->getPromise()->done(); // ensures exception if the process fails
         $this->loop->run();
 
@@ -26,7 +26,7 @@ class ProcessFactoryTest extends AbstractTestCase
 
     public function testFailedProcess(): void
     {
-        $process = $this->createScriptProcess('exitCode.js');
+        $process = $this->createScriptProcess('process-factory/exitCode.js');
         $process->getPromise()->done(); // ensures exception if the process fails
 
         try {

@@ -54,23 +54,23 @@ class JsonDecoderTest extends AbstractTestCase
     {
         return [
             'emptyOutput.js' => [
-                'emptyOutput.js',
+                'json-decoder/emptyOutput.js',
                 [],
             ],
             'oneDocument1.js' => [
-                'oneDocument1.js',
+                'json-decoder/oneDocument1.js',
                 [
                     ['a' => 'b', 'c' => 'd'],
                 ],
             ],
             'oneDocument2.js' => [
-                'oneDocument2.js',
+                'json-decoder/oneDocument2.js',
                 [
                     ['a' => 'b', 'c' => 'd'],
                 ],
             ],
             'manyDocuments.js' => [
-                'manyDocuments.js',
+                'json-decoder/manyDocuments.js',
                 [
                     ['a' => '1', 'c' => 'd'],
                     ['a' => '2', 'c' => 'd'],
@@ -84,8 +84,8 @@ class JsonDecoderTest extends AbstractTestCase
     public function getInvalidScripts(): array
     {
         return [
-            'invalidJson1.js' => ['invalidJson1.js'],
-            'invalidJson2.js' => ['invalidJson2.js'],
+            'invalidJson1.js' => ['json-decoder/invalidJson1.js'],
+            'invalidJson2.js' => ['json-decoder/invalidJson2.js'],
         ];
     }
 }
