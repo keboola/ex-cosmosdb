@@ -1,3 +1,5 @@
+'use strict';
+
 const Extractor = require('./lib/Extractor.js');
 const UserError = require("./lib/UserError.js");
 const ApplicationError = require("./lib/ApplicationError.js");

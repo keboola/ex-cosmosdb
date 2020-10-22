@@ -1,3 +1,5 @@
+'use strict';
+
 const jsonStream = require('./lib/jsonStream.js');
 
 jsonStream.write("{\"abc\": \"xyz\"}\n");

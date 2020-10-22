@@ -1,3 +1,5 @@
+'use strict';
+
 const fs = require('fs');
 
 // We are using separated file descriptor to output JSON documents

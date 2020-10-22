@@ -1,3 +1,5 @@
+'use strict';
+
 const { CosmosClient } = require("@azure/cosmos");
 const UserError = require("./UserError.js");
 const ApplicationError = require("./ApplicationError.js");
