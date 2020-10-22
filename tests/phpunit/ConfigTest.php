@@ -176,7 +176,7 @@ class ConfigTest extends AbstractTestCase
     public function getInvalidConfigs(): iterable
     {
         yield 'empty' => [
-            'The child node "id" at path "root.parameters" must be configured.',
+            'The child node "db" at path "root.parameters" must be configured.',
             [],
         ];
 
