@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor;
 
+use CosmosDbExtractor\Configuration\ActionConfigDefinition;
 use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Configuration\ConfigDefinition;
 use Keboola\Component\BaseComponent;
@@ -55,6 +56,7 @@ class Component extends BaseComponent
 
     protected function getConfigDefinitionClass(): string
     {
-        return ConfigDefinition::class;
+        $action = $this->getRawConfig()['action'] ?? 'run';
+        return $action === 'run' ? ConfigDefinition::class : ActionConfigDefinition::class;
     }
 }

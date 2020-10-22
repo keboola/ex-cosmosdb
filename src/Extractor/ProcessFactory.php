@@ -8,6 +8,7 @@ use CosmosDbExtractor\Exception\ProcessException;
 use Psr\Log\LoggerInterface;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
+use React\Promise\Deferred;
 
 class ProcessFactory
 {
@@ -23,7 +24,7 @@ class ProcessFactory
         $this->loop = $loop;
     }
 
-    public function create(string $cmd, array $env = []): Process
+    public function create(string $cmd, array $env = []): ProcessWrapper
     {
         $fileDescriptors = [
             // STDIN
@@ -54,15 +55,21 @@ class ProcessFactory
         });
 
         // Handle process exit
-        $process->on('exit', function (int $exitCode) use ($cmd): void {
+        $deferred = new Deferred();
+        $process->on('exit', function (int $exitCode) use ($cmd, $deferred): void {
             if ($exitCode === 0) {
                 $this->logger->debug(sprintf('Process "%s" completed successfully.', $cmd));
-                return;
+                $deferred->resolve();
+            } else {
+                $deferred->reject(
+                    new ProcessException(sprintf('Process "%s" exited with code "%d".', $cmd, $exitCode), $exitCode)
+                );
             }
 
-            throw new ProcessException(sprintf('Process "%s" exited with code "%d".', $cmd, $exitCode));
+            // Make sure the event loop ends
+            $this->loop->stop();
         });
 
-        return $process;
+        return new ProcessWrapper($process, $deferred->promise());
     }
 }

@@ -1,4 +1,4 @@
-const jsonStream = require('./jsonStream.js');
+const jsonStream = require('./lib/jsonStream.js');
 
 jsonStream.write("{\"abc\": \"xyz\"}\n");
 jsonStream.write("\n---\n");
