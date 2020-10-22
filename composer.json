@@ -5,12 +5,13 @@
     "require": {
         "php": "^7.4",
         "ext-event": "*",
-        "ext-pcntl": "*",
         "ext-json": "*",
+        "ext-pcntl": "*",
         "halaxa/json-machine": "^0.3.3",
         "keboola/php-component": "^8.1",
         "react/child-process": "^0.6.1",
-        "react/event-loop": "^1.1"
+        "react/event-loop": "^1.1",
+        "react/promise": "^2.8"
     },
     "require-dev": {
         "php-parallel-lint/php-parallel-lint": "^1.2",
