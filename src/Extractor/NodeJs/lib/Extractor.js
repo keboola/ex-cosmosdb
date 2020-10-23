@@ -3,34 +3,112 @@
 const { CosmosClient } = require("@azure/cosmos");
 const UserError = require("./UserError.js");
 const ApplicationError = require("./ApplicationError.js");
+const jsonStream = require('./jsonStream.js');
 
 class Extractor {
     constructor() {
         // Check environment variables
-        ['ENDPOINT', 'KEY', 'DATABASE_ID'].forEach(function(key) {
-            if (process.env[key] === undefined) {
+        ['JSON_DELIMITER', 'ENDPOINT', 'KEY', 'DATABASE_ID'].forEach(function(key) {
+            if (!process.env[key]) {
                 throw new ApplicationError(`Missing "${key}" environment variable.`);
             }
         })
 
+        this.delimiter = JSON.parse(process.env['JSON_DELIMITER']);
         this.endpoint = process.env['ENDPOINT'];
         this.key = process.env['KEY'];
         this.databaseId = process.env['DATABASE_ID'];
     }
 
     async testConnection() {
-        await this.connect()
+        await this.getDatabase()
     }
 
     async extract() {
+        // Check additional environment variables
+        ['CONTAINER_ID', 'QUERY'].forEach(function(key) {
+            if (!process.env[key]) {
+                throw new ApplicationError(`Missing "${key}" environment variable.`);
+            }
+        })
 
+        const containerId = process.env['CONTAINER_ID'];
+        const query  = process.env['QUERY'];
+        const container = await this.getContainer(containerId)
+        await this.fetchAll(container, query)
     }
 
-    async connect() {
+    async processPage(page, pageIndex, resolve)
+    {
+        let count = 0;
+        for (const item of page.resources) {
+            // Write item in JSON format, so PHP process can process it
+            jsonStream.write(JSON.stringify(item))
+            // Write delimiter
+            jsonStream.write(this.delimiter);
+            count++;
+        }
+        resolve(count);
+    }
+
+    async fetchAll(container, query) {
+        const iterator = container.items.query(query);
+
+        let i = 0;
+        let count = 0;
+        let prevPage = null;
+
+        while(true) {
+            // Start fetching of the next page
+            const page = iterator.hasMoreResults() ? await iterator.fetchNext() : null;
+
+            // Wait for the previous page to be processed,
+            // ... so the outputs from the two pages are not mixed
+            count += await prevPage;
+
+            // End if no new page present
+            if (!page) {
+                break;
+            }
+
+            // Schedule the page processing,
+            // ... so we can start fetching of the next page during processing of the current page
+            const pageIndex = i++;
+            prevPage = new Promise(resolve => process.nextTick(() =>
+                this.processPage(page, pageIndex, resolve)
+            ));
+        }
+
+        // Wait until all data has been sent to the PHP process
+        await new Promise(resolve => jsonStream.end(resolve))
+        console.log(`Fetched all "${count}" items from the "${i}" pages.`)
+    }
+
+    async getContainer(containerId) {
+        // Container is something like a table or a collection
+        const database = await this.getDatabase();
         try {
-            const database = this.getDatabase();
-            const info = await database.read()
-            console.log(`Connected to the database: "${info.resource.id}"`);
+            const container = database.container(containerId);
+            const containerInfo = await container.read()
+            console.log(`Connected to the database: "${containerInfo.resource.id}"`);
+            return container;
+        } catch (e) {
+            switch (true) {
+                case e.code === 404:
+                    throw new UserError(`Container "${containerId}" not found.`);
+            }
+
+            throw e;
+        }
+    }
+
+    async getDatabase() {
+        try {
+            console.log(`Connecting to the endpoint: "${this.endpoint}"`);
+            const client = new CosmosClient({ endpoint: this.endpoint, key: this.key });
+            const database = client.database(this.databaseId)
+            const databaseInfo = await database.read()
+            console.log(`Connected to the database: "${databaseInfo.resource.id}"`);
             return database
         } catch (e) {
             switch (true) {
@@ -46,12 +124,6 @@ class Extractor {
 
             throw new UserError(`Cannot connect: ${e.message}`);
         }
-    }
-
-    getDatabase() {
-        console.log(`Connecting to endpoint: "${this.endpoint}"`);
-        const client = new CosmosClient({ endpoint: this.endpoint, key: this.key });
-        return client.database(this.databaseId)
     }
 }
 

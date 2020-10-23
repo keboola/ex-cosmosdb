@@ -8,6 +8,7 @@ use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Exception\ApplicationException;
 use CosmosDbExtractor\Exception\ProcessException;
 use CosmosDbExtractor\Exception\UserException;
+use MongoDB\Driver\Query;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\Factory as EventLoopFactory;
 use React\EventLoop\LoopInterface;
@@ -22,12 +23,15 @@ class Extractor
 
     private ProcessFactory $processFactory;
 
+    private QueryFactory $queryFactory;
+
     public function __construct(LoggerInterface $logger, Config $config)
     {
         $this->logger = $logger;
         $this->config = $config;
         $this->loop = EventLoopFactory::create();
         $this->processFactory = new ProcessFactory($this->logger, $this->loop);
+        $this->queryFactory = new QueryFactory($this->config);
     }
 
     public function testConnection(): void
@@ -79,7 +83,7 @@ class Extractor
             ->getPromise()
             ->done(null, function (\Throwable $e): void {
                 if ($e instanceof ProcessException && $e->getExitCode() === 1) {
-                    throw new UserException('Export failed. Check previous messages.', $e->getCode(), $e);
+                    throw new UserException('Export failed.', $e->getCode(), $e);
                 } else {
                     throw new ApplicationException($e->getMessage(), $e->getCode(), $e);
                 }
@@ -92,12 +96,13 @@ class Extractor
     protected function writeToCsv(array &$document): void
     {
         // TODO
-        var_dump($document);
+        //echo ".";
     }
 
     protected function getTestConnectionEnv(): array
     {
         return [
+            'JSON_DELIMITER' => json_encode(JsonDecoder::DELIMITER),
             'ENDPOINT' => $this->config->getEndpoint(),
             'KEY' => $this->config->getKey(),
             'DATABASE_ID' => $this->config->getDatabaseId(),
@@ -107,7 +112,8 @@ class Extractor
     protected function getExtractEnv(): array
     {
         return array_merge($this->getTestConnectionEnv(), [
-
+            'CONTAINER_ID' => $this->config->getContainerId(),
+            'QUERY' => $this->queryFactory->create(),
         ]);
     }
 

@@ -6,8 +6,9 @@ const {CosmosClient} = require("@azure/cosmos");
 
 // List of the datasets
 const datasets = [
-    {container: "restaurant", file: "restaurant.json", count: 25},
+    {container: "simple", file: "simple.json", count: 5},
     {container: "movie", file: "movie.json", count: 7},
+    {container: "restaurant", file: "restaurant.json", count: 25},
     {container: "fk_keys_check", file: "fk_keys_check.json", count: 4}
 ];
 
@@ -54,7 +55,8 @@ class Importer {
         for await (let bulk of this.getBulks(dataset)) {
             process.stdout.write('.');
             // Create `bulk_size` parallel requests and wait for all
-            const requests = bulk.map((item) => container.items.create(item));
+            // We are using upsert, it is more safe for parallel builds
+            const requests = bulk.map((item) => container.items.upsert(item));
             await Promise.all(requests);
         }
         process.stdout.write(" OK\n");
