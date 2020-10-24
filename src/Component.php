@@ -21,7 +21,7 @@ class Component extends BaseComponent
     public function __construct(LoggerInterface $logger)
     {
         parent::__construct($logger);
-        $this->extractor = new Extractor($this->getLogger(), $this->getConfig());
+        $this->extractor = new Extractor($this->getLogger(), $this->getDataDir(), $this->getConfig());
     }
 
     protected function getSyncActions(): array

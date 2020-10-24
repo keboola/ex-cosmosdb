@@ -16,11 +16,14 @@ The configuration `config.json` contains following properties in `parameters` ke
 - `containerId` - string (required): Container is similar to table in the relational db, or collection in the MongoDB.
 - `output` - string (required): Name of the output CSV file.
 - `retries`- integer (optional): Number of the max retries if an error occurred.
+- `ignoredKeys`- array (optional): 
+    - CosmosDB automatically adds some metadata keys when the item is inserted.
+    - By default, these keys are ignored: `["_rid", "_self", "_etag", "_attachments", "_ts"]`
 - `incremental` - boolean (optional): Enables [Incremental Loading](https://help.keboola.com/storage/tables/#incremental-loading). Default `false`.
 - `incrementalFetchingKey` - string (optional): Name of key for [Incremental Fetching](https://help.keboola.com/components/extractors/database/#incremental-fetching)
 - `mode` - enum (optional)
     - `mapping` (default) - Documents are exported using specified `mapping`, [read more](https://github.com/keboola/php-csvmap).
-    - `raw` - Documents are exported as plain JSON strings.
+    - `raw` - Documents are exported as plain JSON strings. CSV file will contain `id` and `data` columns.
 - `mapping` - string - required for `mode` = `mapping`, [read more](https://github.com/keboola/php-csvmap).
 
 

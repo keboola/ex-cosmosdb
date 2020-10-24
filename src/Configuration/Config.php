@@ -49,6 +49,11 @@ class Config extends BaseConfig
         return (int) $this->getValue(['parameters', 'retries']);
     }
 
+    public function getIgnoredKeys(): array
+    {
+        return $this->getValue(['parameters', 'ignoredKeys']);
+    }
+
     public function hasSelect(): bool
     {
         return $this->getValue(['parameters', 'select']) !== null;

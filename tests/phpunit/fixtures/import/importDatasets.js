@@ -6,14 +6,12 @@ const {CosmosClient} = require("@azure/cosmos");
 
 // List of the datasets
 const datasets = [
-    {container: "simple", file: "simple.json", count: 5},
-    {container: "movie", file: "movie.json", count: 7},
-    {container: "restaurant", file: "restaurant.json", count: 25},
-    {container: "fk_keys_check", file: "fk_keys_check.json", count: 4}
+    // If bulkSize > 1, then order of the documents is random
+    {container: "simple", file: "simple.json", count: 5, bulkSize: 1},
+    {container: "movie", file: "movie.json", count: 7, bulkSize: 1},
+    {container: "fk_keys_check", file: "fk_keys_check.json", count: 4, bulkSize: 1},
+    {container: "restaurant", file: "restaurant.json", count: 25, bulkSize: 25}
 ];
-
-// Bulk size
-const bulkSize = 50;
 
 class Importer {
     constructor() {
@@ -47,7 +45,7 @@ class Importer {
         // Check if items count match
         if (await this.checkItemsCount(container, dataset)) {
             // Yes, up to date, nothing to do
-            process.stdout.write(`UP TO DATE\n`)
+            process.stdout.write(` FOUND\n`)
             return;
         }
 
@@ -59,7 +57,7 @@ class Importer {
             const requests = bulk.map((item) => container.items.upsert(item));
             await Promise.all(requests);
         }
-        process.stdout.write(" OK\n");
+        process.stdout.write(" IMPORTED\n");
     }
 
     async checkItemsCount(container, dataset) {
@@ -84,7 +82,7 @@ class Importer {
         let bulk = [];
         for await (let item of this.getItems(dataset)) {
             bulk.push(item);
-            if (bulk.length === bulkSize) {
+            if (bulk.length === dataset.bulkSize) {
                 yield bulk;
                 bulk = [];
             }
