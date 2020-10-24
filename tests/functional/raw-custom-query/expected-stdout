@@ -1,0 +1,5 @@
+Connecting to the endpoint: "%a"
+Connected to the database: "%a"
+Connected to the container: "movie"
+Running query: "SELECT m.title AS id FROM Movie m OFFSET 0 LIMIT 1"
+Fetched "1" items / "1" pages from the container "movie".

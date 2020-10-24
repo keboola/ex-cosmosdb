@@ -79,7 +79,7 @@ class RawCsvWriter implements ICsvWriter
 
     protected function getId(array &$item): string
     {
-        // Each Cosmos DB item has ID field
+        // Each Cosmos DB item has the ID field
         $id = $item[self::ITEM_ID_KEY] ?? null;
 
         if (!$id) {

@@ -17,6 +17,11 @@ class QueryFactory
 
     public function create(): string
     {
+        return $this->config->hasQuery() ? $this->config->getQuery() : $this->generate();
+    }
+
+    protected function generate(): string
+    {
         $sql = [];
         $sql[] = 'SELECT ' . $this->getSelect();
         $sql[] = 'FROM ' . $this->getFrom();
@@ -32,12 +37,12 @@ class QueryFactory
         return implode(' ', $sql);
     }
 
-    private function getSelect(): string
+    protected function getSelect(): string
     {
         return $this->config->hasSelect() ? $this->config->getSelect() : '*';
     }
 
-    private function getFrom(): string
+    protected function getFrom(): string
     {
         return $this->config->hasFrom() ? $this->config->getFrom() : 'c';
     }
