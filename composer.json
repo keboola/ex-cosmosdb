@@ -8,6 +8,7 @@
         "ext-json": "*",
         "ext-pcntl": "*",
         "halaxa/json-machine": "^0.3.3",
+        "keboola/csv": "^2.2",
         "keboola/php-component": "^8.1",
         "react/child-process": "^0.6.1",
         "react/event-loop": "^1.1",
