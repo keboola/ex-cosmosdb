@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Extractor\CsvWriter;
 
-use InvalidArgumentException;
+use CosmosDbExtractor\Exception\ApplicationException;
+use CosmosDbExtractor\Exception\UserException;
 use CosmosDbExtractor\Configuration\Config;
 use Keboola\Component\JsonHelper;
 use Keboola\Csv\CsvWriter;
@@ -43,17 +44,14 @@ class RawCsvWriter implements ICsvWriter
 
     public function writeItem(array $item): void
     {
-        // Each Cosmos DB item must have id field
-        $id = $item[self::ITEM_ID_KEY] ?? null;
-        if (!$id) {
-            throw new InvalidArgumentException('Missing item\'s "id" key.');
-        }
+        $id = $this->getId($item);
 
         // Remove ignored (generated) keys
         foreach ($this->ignoredKeys as $key) {
             unset($item[$key]);
         }
 
+        // Write row to CSV
         $this->writer->writeRow([
             self::ID_COLUMN => $id,
             self::DATA_COLUMN => JsonHelper::encode($item),
@@ -77,5 +75,26 @@ class RawCsvWriter implements ICsvWriter
             'primary_key' => ['id'],
             'incremental' => $this->config->isIncremental(),
         ];
+    }
+
+    protected function getId(array &$item): string
+    {
+        // Each Cosmos DB item has ID field
+        $id = $item[self::ITEM_ID_KEY] ?? null;
+
+        if (!$id) {
+            if ($this->config->hasSelect()) {
+                // ID is missing, because it is not configured in the "select"
+                throw new UserException(
+                    'Missing "id" key in the query results. ' .
+                    'Please modify the "select" value in the configuration ' .
+                    'or use the "mapping" mode instead of the "raw".'
+                );
+            } else {
+                throw new ApplicationException('Missing "id" key in the query results.');
+            }
+        }
+
+        return (string) $id;
     }
 }

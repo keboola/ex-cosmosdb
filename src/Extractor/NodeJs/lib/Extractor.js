@@ -35,7 +35,18 @@ class Extractor {
         const containerId = process.env['CONTAINER_ID'];
         const query  = process.env['QUERY'];
         const container = await this.getContainer(containerId)
-        await this.fetchAll(container, query)
+
+        try {
+            await this.fetchAll(container, query)
+        } catch (e) {
+            switch (true) {
+                case e.code === 400:
+                    // Bad request, eg. bad SQL query
+                    throw new UserError(e.message)
+            }
+
+            throw e
+        }
     }
 
     async processPage(page, pageIndex, resolve)
@@ -52,6 +63,7 @@ class Extractor {
     }
 
     async fetchAll(container, query) {
+        console.log(`Running query: "${query}"`);
         const iterator = container.items.query(query);
 
         let i = 0;
@@ -81,7 +93,7 @@ class Extractor {
 
         // Wait until all data has been sent to the PHP process
         await new Promise(resolve => jsonStream.end(resolve))
-        console.log(`Fetched all "${count}" items from the "${i}" pages.`)
+        console.log(`Fetched "${count}" items / "${i}" pages from the container "${container.id}".`)
     }
 
     async getContainer(containerId) {
@@ -90,7 +102,7 @@ class Extractor {
         try {
             const container = database.container(containerId);
             const containerInfo = await container.read()
-            console.log(`Connected to the database: "${containerInfo.resource.id}"`);
+            console.log(`Connected to the container: "${containerInfo.resource.id}"`);
             return container;
         } catch (e) {
             switch (true) {

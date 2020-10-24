@@ -1,0 +1,16 @@
+{
+  "parameters": {
+    "db": {
+      "endpoint": "%env(string:ENDPOINT)%",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    },
+    "id": 123,
+    "name": "row123",
+    "containerId": "movie",
+    "output": "output-csv",
+    "mode": "raw",
+    "select": "CONCAT(m.id, '-', g) AS id, m.title, g AS genre",
+    "from": "Movie m JOIN g IN m.info.genres"
+  }
+}

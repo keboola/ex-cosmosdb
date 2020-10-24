@@ -68,6 +68,20 @@ class Config extends BaseConfig
         return $this->getValue(['parameters', 'select']);
     }
 
+    public function hasFrom(): bool
+    {
+        return $this->getValue(['parameters', 'from']) !== null;
+    }
+
+    public function getFrom(): string
+    {
+        if (!$this->hasFrom()) {
+            throw new UndefinedValueException('From is not defined.');
+        }
+
+        return $this->getValue(['parameters', 'from']);
+    }
+
     public function hasSort(): bool
     {
         return $this->getValue(['parameters', 'sort']) !== null;

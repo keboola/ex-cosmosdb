@@ -17,7 +17,7 @@ class ConfigDefinition extends BaseConfigDefinition
     public const MODE_MAPPING = 'mapping';
 
     private const DEFAULT_IGNORED_KEYS = ['_rid', '_self', '_etag', '_attachments', '_ts'];
-    private const QUERY_INCOMPATIBLE_NODES = ['select', 'sort', 'limit', 'incrementalFetchingKey'];
+    private const QUERY_INCOMPATIBLE_NODES = ['select', 'from', 'sort', 'limit', 'incrementalFetchingKey'];
 
     protected function getParametersDefinition(): ArrayNodeDefinition
     {
@@ -41,6 +41,7 @@ class ConfigDefinition extends BaseConfigDefinition
                 ->end()
                 // Generated query
                 ->scalarNode('select')->defaultNull()->cannotBeEmpty()->end()
+                ->scalarNode('from')->defaultNull()->cannotBeEmpty()->end()
                 ->scalarNode('sort')->defaultNull()->cannotBeEmpty()->end()
                 ->integerNode('limit')->defaultNull()->end()
                 // Custom query

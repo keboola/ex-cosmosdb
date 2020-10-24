@@ -28,16 +28,19 @@ The configuration `config.json` contains following properties in `parameters` ke
 
 
 
-- By default, Extractor exports all documents, using **the generated SQL query**.     
+- By default, Extractor exports all documents, using **the generated SQL query**.
+    - Default query is `SELECT * FROM c`     
     - Query can be modified with these parameters:
-    - `select` - string (optional), eg. `name, date`
-    - `sort` - string (optional), eg. `date`
-    - `limit` - integer (optional), eg. 500
+    - `select` - string (optional), eg. `c.name, c.date`, default `*`, [read more](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-select).
+       - For `raw` mode must be `id` field present in the query results.
+    - `from` - string (optional), eg. `Families f`, default `c`, [read more](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-from).
+    - `sort` - string (optional), eg. `c.date`, [read more](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-order-by).
+    - `limit` - integer (optional), eg. `500`, [read more](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-offset-limit).
 
     
     
 - Or you can set **a custom query** using parameter:
-    - `query` - string (optional), eg. `SELECT * FROM c`
+    - `query` - string (optional), eg. `SELECT f.name FROM Families f`
 
 
 ## Actions
