@@ -1,15 +1,17 @@
+const jsonStream = require('../../../src/Extractor/NodeJs/lib/jsonStream.js');
+
 async function sleep() {
     await new Promise(resolve => setTimeout(resolve, 250));
 }
 
 (async () => {
-    console.log('{"a": "1", "c": "d"}');
+    jsonStream.write('{"a": "1", "c": "d"}');
     await sleep();
-    console.log('---');
-    console.log('{"a": "2", "c": "d"}');
-    console.log('---');
-    console.log('{"a": "3", "c": "d"}');
+    jsonStream.write("\n---\n");
+    jsonStream.write('{"a": "2", "c": "d"}');
+    jsonStream.write("\n---\n");
+    jsonStream.write('{"a": "3", "c": "d"}');
     await sleep();
-    console.log('---');
-    console.log('{"a": "4", "c": "d"}');
+    jsonStream.write("\n---\n");
+    jsonStream.write('{"a": "4", "c": "d"}');
 })();

@@ -1,0 +1,10 @@
+{
+  "action": "testConnection",
+  "parameters": {
+    "db": {
+      "endpoint": "invalid endpoint",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    }
+  }
+}

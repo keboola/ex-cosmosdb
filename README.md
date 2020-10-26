@@ -37,11 +37,21 @@ The configuration `config.json` contains following properties in `parameters` ke
     - `query` - string (optional), eg. `SELECT * FROM c`
 
 
+## Actions
+
+Read more about actions [in KBC documentation](https://developers.keboola.com/extend/common-interface/actions/).
+
+### Test Connection
+
+Action `testConnection` tests the connection to the server.
+
+The `parameters.db` node must be specified in the configuration.
+
 ## Data flow
 
 - The connection to CosmosDB is established from the NodeJs code, using the official package [@azure/cosmos](https://www.npmjs.com/package/@azure/cosmos).
 - There is no reliable driver for PHP now.
-- The NodeJs code prints exported JSON documents to `STDOUT`, from there they are read by the `JsonDecoder` PHP class.
+- The NodeJs code prints exported JSON documents to `JSON_STREAM_FD` file descriptor, from there they are read by the `JsonDecoder` PHP class.
 - This communication is asynchronous.
 - The code in PHP decodes the loaded JSON documents and writes them to the CSV files using [keboola/php-csvmap](https://github.com/keboola/php-csvmap).
 
@@ -56,6 +66,14 @@ docker-compose build
 docker-compose run --rm dev composer install --no-scripts
 docker-compose run --rm dev npm install
 ```
+
+Create `.env` file with following variables:
+```env
+ENDPOINT=
+KEY=
+DATABASE_ID=
+```
+
 
 Run the test suite using this command:
 

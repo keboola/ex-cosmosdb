@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Tests;
 
+use CosmosDbExtractor\Extractor\ProcessWrapper;
 use JsonException;
 use CosmosDbExtractor\Extractor\JsonDecoder;
 use CosmosDbExtractor\Extractor\ProcessFactory;
@@ -31,7 +32,7 @@ abstract class AbstractTestCase extends TestCase
         $this->processFactory = new ProcessFactory($this->logger, $this->loop);
     }
 
-    protected function createScriptProcess(string $script): Process
+    protected function createScriptProcess(string $script): ProcessWrapper
     {
         return $this->processFactory->create(sprintf('node %s/fixtures/%s', __DIR__, $script));
     }

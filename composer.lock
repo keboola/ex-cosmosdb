@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e21a6b047e71fdc82843d560991a4a86",
+    "content-hash": "ec3fd429cbfd58b30cabeba78ead3955",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -409,6 +409,52 @@
                 "event-loop"
             ],
             "time": "2020-01-01T18:39:52+00:00"
+        },
+        {
+            "name": "react/promise",
+            "version": "v2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/reactphp/promise.git",
+                "reference": "f3cff96a19736714524ca0dd1d4130de73dbbbc4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/reactphp/promise/zipball/f3cff96a19736714524ca0dd1d4130de73dbbbc4",
+                "reference": "f3cff96a19736714524ca0dd1d4130de73dbbbc4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7.0 || ^6.5 || ^5.7 || ^4.8.36"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "React\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jan Sorgalla",
+                    "email": "jsorgalla@gmail.com"
+                }
+            ],
+            "description": "A lightweight implementation of CommonJS Promises/A for PHP",
+            "keywords": [
+                "promise",
+                "promises"
+            ],
+            "time": "2020-05-12T15:16:56+00:00"
         },
         {
             "name": "react/stream",
@@ -1080,19 +1126,20 @@
         },
         {
             "name": "keboola/datadir-tests",
-            "version": "4.0.2",
+            "version": "5.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/datadir-tests.git",
-                "reference": "b01856c771760331b50a082f8b6cb2557632c5bc"
+                "reference": "9b2bf6d1495973e43b48a267469cb990dfe44520"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/datadir-tests/zipball/b01856c771760331b50a082f8b6cb2557632c5bc",
-                "reference": "b01856c771760331b50a082f8b6cb2557632c5bc",
+                "url": "https://api.github.com/repos/keboola/datadir-tests/zipball/9b2bf6d1495973e43b48a267469cb990dfe44520",
+                "reference": "9b2bf6d1495973e43b48a267469cb990dfe44520",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "keboola/php-temp": "^2.0",
                 "php": "^7.3",
                 "phpunit/phpunit": "^9.0",
@@ -1116,7 +1163,7 @@
                 "MIT"
             ],
             "description": "Tool for functional testing of Keboola Connection components",
-            "time": "2020-03-19T12:08:12+00:00"
+            "time": "2020-09-10T12:31:35+00:00"
         },
         {
             "name": "keboola/php-temp",
@@ -3248,8 +3295,8 @@
     "platform": {
         "php": "^7.4",
         "ext-event": "*",
-        "ext-pcntl": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-pcntl": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"

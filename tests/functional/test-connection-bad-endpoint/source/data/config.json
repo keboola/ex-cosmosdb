@@ -1,0 +1,10 @@
+{
+  "action": "testConnection",
+  "parameters": {
+    "db": {
+      "endpoint": "https://google.com",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    }
+  }
+}
