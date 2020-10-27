@@ -27,8 +27,9 @@ class JsonDecoderTest extends AbstractTestCase
         $process = $this->createScriptProcess($script);
         $this->jsonDecoder->processStream(
             $process->getJsonStream(),
-            function (array &$document) use (&$parsedDocuments): void {
-                $parsedDocuments[] = $document;
+            function (object $document) use (&$parsedDocuments): void {
+                // Convert object to array for asserts
+                $parsedDocuments[] = (array) $document;
             }
         );
 

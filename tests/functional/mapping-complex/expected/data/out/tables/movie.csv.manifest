@@ -1,0 +1,12 @@
+{
+    "columns": [
+        "title-id",
+        "release_date",
+        "missing",
+        "directors"
+    ],
+    "primary_key": [
+        "title-id"
+    ],
+    "incremental": false
+}

@@ -10,15 +10,11 @@ use CosmosDbExtractor\Configuration\Config;
 use Keboola\Component\JsonHelper;
 use Keboola\Csv\CsvWriter;
 
-class RawCsvWriter implements ICsvWriter
+class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
 {
     public const ITEM_ID_KEY = 'id';
     public const ID_COLUMN = 'id';
     public const DATA_COLUMN = 'data';
-
-    private Config $config;
-
-    private array $ignoredKeys;
 
     private string $csvPath;
 
@@ -28,8 +24,7 @@ class RawCsvWriter implements ICsvWriter
 
     public function __construct(string $dataDir, Config $config)
     {
-        $this->config = $config;
-        $this->ignoredKeys = $config->getIgnoredKeys();
+        parent::__construct($dataDir, $config);
         $this->csvPath = sprintf('%s/out/tables/%s.csv', $dataDir, $config->getOutput());
         $this->writer = new CsvWriter($this->csvPath);
     }
@@ -42,22 +37,25 @@ class RawCsvWriter implements ICsvWriter
         }
     }
 
-    public function writeItem(array $item): void
+    public function writeItem(object $item): void
     {
         $id = $this->getId($item);
 
         // Remove ignored (generated) keys
-        foreach ($this->ignoredKeys as $key) {
-            unset($item[$key]);
-        }
+        $item = $this->removeIgnoredKeys($item);
 
         // Write row to CSV
         $this->writer->writeRow([
             self::ID_COLUMN => $id,
-            self::DATA_COLUMN => JsonHelper::encode($item),
+            self::DATA_COLUMN => json_encode($item),
         ]);
 
         $this->rows++;
+    }
+
+    public function finalize(): void
+    {
+        $this->writeManifest();
     }
 
     public function writeManifest(): void
@@ -77,10 +75,10 @@ class RawCsvWriter implements ICsvWriter
         ];
     }
 
-    protected function getId(array &$item): string
+    protected function getId(object $item): string
     {
         // Each Cosmos DB item has the ID field
-        $id = $item[self::ITEM_ID_KEY] ?? null;
+        $id = property_exists($item, self::ITEM_ID_KEY) ? $item->{self::ITEM_ID_KEY} : null;
 
         if (!$id) {
             if ($this->config->hasSelect()) {

@@ -6,7 +6,13 @@ namespace CosmosDbExtractor\Extractor\CsvWriter;
 
 interface ICsvWriter
 {
-    public function writeItem(array $item): void;
+    /**
+     * Write single decoded JSON document to CSV file
+     */
+    public function writeItem(object $item): void;
 
-    public function writeManifest(): void;
+    /**
+     * Called when all items are written
+     */
+    public function finalize(): void;
 }

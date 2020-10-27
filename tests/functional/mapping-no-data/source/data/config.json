@@ -1,0 +1,20 @@
+{
+  "parameters": {
+    "db": {
+      "endpoint": "%env(string:ENDPOINT)%",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    },
+    "id": 123,
+    "name": "row123",
+    "containerId": "simple",
+    "query": "SELECT * FROM c WHERE c.name = 'not_found'",
+    "output": "output-csv",
+    "mode": "mapping",
+    "mapping": {
+      "id": "id",
+      "name": "full_name",
+      "age": "age"
+    }
+  }
+}

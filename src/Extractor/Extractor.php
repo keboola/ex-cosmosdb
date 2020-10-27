@@ -83,7 +83,7 @@ class Extractor
         // JSON documents separated by delimiter (see JsonDecoder) are asynchronously read and decoded
         // from the process output (on the separated file descriptor) and converted to CSV.
         $decoder = new JsonDecoder();
-        $decoder->processStream($process->getJsonStream(), function (array &$item) use ($csvWriter): void {
+        $decoder->processStream($process->getJsonStream(), function (object $item) use ($csvWriter): void {
             $this->writeToCsv($item, $csvWriter);
         });
 
@@ -101,11 +101,11 @@ class Extractor
         // Start event loop
         $this->loop->run();
 
-        // Write manifest
-        $csvWriter->writeManifest();
+        // All items wrote, finalize
+        $csvWriter->finalize();
     }
 
-    protected function writeToCsv(array &$item, ICsvWriter $csvWriter): void
+    protected function writeToCsv(object $item, ICsvWriter $csvWriter): void
     {
         $csvWriter->writeItem($item);
     }

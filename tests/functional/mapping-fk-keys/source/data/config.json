@@ -1,0 +1,41 @@
+{
+  "parameters": {
+    "db": {
+      "endpoint": "%env(string:ENDPOINT)%",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    },
+    "id": 123,
+    "name": "row123",
+    "containerId": "fk_keys_check",
+    "output": "output-csv",
+    "mode": "mapping",
+    "mapping": {
+      "id": "id",
+      "item": {
+        "type": "table",
+        "destination": "level1",
+        "tableMapping": {
+          "a.itemId": "a",
+          "b.itemId": "b",
+          "a": {
+            "type": "table",
+            "destination": "level2-a",
+            "tableMapping": {
+              "count": "count",
+              "itemId": "itemId"
+            }
+          },
+          "b": {
+            "type": "table",
+            "destination": "level2-b",
+            "tableMapping": {
+              "count": "count",
+              "itemId": "itemId"
+            }
+          }
+        }
+      }
+    }
+  }
+}

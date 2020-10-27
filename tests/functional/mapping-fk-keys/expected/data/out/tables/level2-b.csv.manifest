@@ -1,0 +1,9 @@
+{
+    "columns": [
+        "count",
+        "itemId",
+        "level1_pk"
+    ],
+    "primary_key": [],
+    "incremental": false
+}

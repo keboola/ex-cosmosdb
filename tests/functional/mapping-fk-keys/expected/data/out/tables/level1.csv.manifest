@@ -1,0 +1,11 @@
+{
+    "columns": [
+        "a",
+        "b",
+        "level2-a",
+        "level2-b",
+        "output-csv_pk"
+    ],
+    "primary_key": [],
+    "incremental": false
+}
