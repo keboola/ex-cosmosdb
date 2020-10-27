@@ -285,16 +285,16 @@
         },
         {
             "name": "keboola/php-csvtable",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/keboola/php-csvtable.git",
-                "reference": "0ad746e04fa7a26c7e222b2c5a76eefe478a498c"
+                "reference": "f3abf0d300452ad81fc5e9b1f4302ae1eead633e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/keboola/php-csvtable/zipball/0ad746e04fa7a26c7e222b2c5a76eefe478a498c",
-                "reference": "0ad746e04fa7a26c7e222b2c5a76eefe478a498c",
+                "url": "https://api.github.com/repos/keboola/php-csvtable/zipball/f3abf0d300452ad81fc5e9b1f4302ae1eead633e",
+                "reference": "f3abf0d300452ad81fc5e9b1f4302ae1eead633e",
                 "shasum": ""
             },
             "require": {
@@ -328,7 +328,7 @@
                 "storageapi",
                 "table"
             ],
-            "time": "2020-10-26T11:12:31+00:00"
+            "time": "2020-10-27T14:00:27+00:00"
         },
         {
             "name": "keboola/php-temp",
