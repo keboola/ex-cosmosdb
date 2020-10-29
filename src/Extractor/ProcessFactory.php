@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Extractor;
 
+use Generator;
 use CosmosDbExtractor\Exception\ProcessException;
 use Psr\Log\LoggerInterface;
 use React\ChildProcess\Process;
@@ -46,12 +47,16 @@ class ProcessFactory
 
         // Log process stdout output as info
         $process->stdout->on('data', function (string $chunk): void {
-            $this->logger->info(trim($chunk));
+            foreach ($this->explodeLines($chunk) as $line) {
+                $this->logger->info($line);
+            }
         });
 
         // Log process stderr output as warning
         $process->stderr->on('data', function (string $chunk): void {
-            $this->logger->warning(trim($chunk));
+            foreach ($this->explodeLines($chunk) as $line) {
+                $this->logger->warning($line);
+            }
         });
 
         // Handle process exit
@@ -71,5 +76,15 @@ class ProcessFactory
         });
 
         return new ProcessWrapper($process, $deferred->promise());
+    }
+
+    private function explodeLines(string $str): Generator
+    {
+        foreach (explode("\n", $str) as $line) {
+            $line = trim($line);
+            if ($line) {
+                yield $line;
+            }
+        }
     }
 }
