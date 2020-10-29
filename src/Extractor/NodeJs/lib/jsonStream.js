@@ -7,7 +7,7 @@ const fs = require('fs');
 // Number of the custom file descriptor is loaded from ENV (set by PHP), ... fallback is STDOUT.
 let jsonStreamFd;
 if (process.env.JSON_STREAM_FD !== undefined) {
-  jsonStreamFd = parseInt(process.env.JSON_STREAM_FD);
+  jsonStreamFd = parseInt(process.env.JSON_STREAM_FD, 10);
 } else {
   console.error('Please, set env variable "JSON_STREAM_FD". Using STDOUT as fallback.');
   jsonStreamFd = process.stdout.fd;

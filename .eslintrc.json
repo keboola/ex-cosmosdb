@@ -6,10 +6,11 @@
     "import"
   ],
   "env": {
-    "node": true,
-    "mocha": true
+    "node": true
   },
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "no-constant-condition": "off",
+    "no-await-in-loop": "off"
   }
 }

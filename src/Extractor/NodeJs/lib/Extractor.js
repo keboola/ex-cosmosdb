@@ -7,6 +7,20 @@ const ApplicationError = require('./ApplicationError.js');
 const jsonStream = require('./jsonStream.js');
 
 class Extractor {
+  static async fetchNextWithRetry(iterator, maxTries) {
+    return promiseRetry(async () => iterator.fetchNext(), {
+      onFailedAttempt: (error) => {
+        if (error.retriesLeft > 0) {
+          console.log(`${error.message}. Retrying... [${error.attemptNumber}x]`);
+        }
+      },
+      retries: maxTries - 1,
+      factor: 2, // exponential factor
+      minTimeout: 1000,
+      maxTimeout: 30000,
+    });
+  }
+
   constructor() {
     // Check environment variables
     ['JSON_DELIMITER', 'ENDPOINT', 'KEY', 'DATABASE_ID'].forEach((key) => {
@@ -45,21 +59,22 @@ class Extractor {
         case e.code === 400:
           // Bad request, eg. bad SQL query
           throw new UserError(e.message);
-      }
 
-      throw e;
+        default:
+          throw e;
+      }
     }
   }
 
   async processPage(page, pageIndex, resolve) {
     let count = 0;
-    for (const item of page.resources) {
+    page.resources.forEach((item) => {
       // Write item in JSON format, so PHP process can process it
       jsonStream.write(JSON.stringify(item));
       // Write delimiter
       jsonStream.write(this.delimiter);
-      count++;
-    }
+      count += 1;
+    });
     resolve(count);
   }
 
@@ -73,7 +88,7 @@ class Extractor {
 
     while (true) {
       // Start fetching of the next page
-      const page = iterator.hasMoreResults() ? await this.fetchNextWithRetry(iterator, maxTries) : null;
+      const page = iterator.hasMoreResults() ? await Extractor.fetchNextWithRetry(iterator, maxTries) : null;
 
       // Wait for the previous page to be processed,
       // ... so the outputs from the two pages are not mixed
@@ -86,27 +101,14 @@ class Extractor {
 
       // Schedule the page processing,
       // ... so we can start fetching of the next page during processing of the current page
-      const pageIndex = i++;
+      const pageIndex = i;
       prevPage = new Promise((resolve) => process.nextTick(() => this.processPage(page, pageIndex, resolve)));
+      i += 1;
     }
 
     // Wait until all data has been sent to the PHP process
     await new Promise((resolve) => jsonStream.end(resolve));
     console.log(`Fetched "${count}" items / "${i}" pages from the container "${container.id}".`);
-  }
-
-  async fetchNextWithRetry(iterator, maxTries) {
-    return promiseRetry(async () => await iterator.fetchNext(), {
-      onFailedAttempt: (error) => {
-        if (error.retriesLeft > 0) {
-          console.log(`${error.message}. Retrying... [${error.attemptNumber}x]`);
-        }
-      },
-      retries: maxTries - 1,
-      factor: 2, // exponential factor
-      minTimeout: 1000,
-      maxTimeout: 30000,
-    });
   }
 
   async getContainer(containerId) {
@@ -121,9 +123,10 @@ class Extractor {
       switch (true) {
         case e.code === 404:
           throw new UserError(`Container "${containerId}" not found.`);
-      }
 
-      throw e;
+        default:
+          throw e;
+      }
     }
   }
 
@@ -145,9 +148,10 @@ class Extractor {
 
         case e.message && e.message.includes('authorization token can\'t serve the request.'):
           throw new UserError('Cannot connect: Invalid key.');
-      }
 
-      throw new UserError(`Cannot connect: ${e.message}`);
+        default:
+          throw new UserError(`Cannot connect: ${e.message}`);
+      }
     }
   }
 }
