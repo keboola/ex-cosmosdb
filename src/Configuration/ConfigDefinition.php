@@ -32,7 +32,7 @@ class ConfigDefinition extends BaseConfigDefinition
                 ->scalarNode('name')->cannotBeEmpty()->defaultNull()->end()
                 ->scalarNode('containerId')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('output')->isRequired()->cannotBeEmpty()->end()
-                ->integerNode('retries')->min(0)->defaultValue(self::DEFAULT_MAX_TRIES)->end()
+                ->integerNode('maxTries')->min(1)->defaultValue(self::DEFAULT_MAX_TRIES)->end()
                 // Ignore generated keys by default
                 ->arrayNode('ignoredKeys')
                     ->treatNullLike([])

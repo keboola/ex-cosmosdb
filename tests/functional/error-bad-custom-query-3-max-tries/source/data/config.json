@@ -1,0 +1,14 @@
+{
+  "parameters": {
+    "db": {
+      "endpoint": "%env(string:ENDPOINT)%",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    },
+    "containerId": "movie",
+    "output": "output-csv",
+    "mode": "raw",
+    "query": "SELECT foo FROM bar",
+    "maxTries": 3
+  }
+}

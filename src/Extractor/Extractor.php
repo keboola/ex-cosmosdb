@@ -144,6 +144,7 @@ class Extractor
         return array_merge($this->getTestConnectionEnv(), [
             'CONTAINER_ID' => $this->config->getContainerId(),
             'QUERY' => $this->queryFactory->create(),
+            'MAX_TRIES' => $this->config->getMaxTries(),
         ]);
     }
 

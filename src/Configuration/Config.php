@@ -65,7 +65,7 @@ class Config extends BaseConfig
 
     public function getMaxTries(): int
     {
-        return (int) $this->getValue(['parameters', 'retries']);
+        return (int) $this->getValue(['parameters', 'maxTries']);
     }
 
     public function getIgnoredKeys(): array

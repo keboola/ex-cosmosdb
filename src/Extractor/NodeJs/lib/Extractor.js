@@ -1,6 +1,7 @@
 'use strict';
 
 const { CosmosClient } = require("@azure/cosmos");
+const promiseRetry = require('p-retry');
 const UserError = require("./UserError.js");
 const ApplicationError = require("./ApplicationError.js");
 const jsonStream = require('./jsonStream.js');
@@ -26,7 +27,7 @@ class Extractor {
 
     async extract() {
         // Check additional environment variables
-        ['CONTAINER_ID', 'QUERY'].forEach(function(key) {
+        ['CONTAINER_ID', 'QUERY', 'MAX_TRIES'].forEach(function(key) {
             if (!process.env[key]) {
                 throw new ApplicationError(`Missing "${key}" environment variable.`);
             }
@@ -34,10 +35,11 @@ class Extractor {
 
         const containerId = process.env['CONTAINER_ID'];
         const query  = process.env['QUERY'];
+        const maxTries  = process.env['MAX_TRIES'];
         const container = await this.getContainer(containerId)
 
         try {
-            await this.fetchAll(container, query)
+            await this.fetchAll(container, query, maxTries)
         } catch (e) {
             switch (true) {
                 case e.code === 400:
@@ -62,7 +64,7 @@ class Extractor {
         resolve(count);
     }
 
-    async fetchAll(container, query) {
+    async fetchAll(container, query, maxTries) {
         console.log(`Running query: "${query}"`);
         const iterator = container.items.query(query);
 
@@ -72,7 +74,7 @@ class Extractor {
 
         while(true) {
             // Start fetching of the next page
-            const page = iterator.hasMoreResults() ? await iterator.fetchNext() : null;
+            const page = iterator.hasMoreResults() ? await this.fetchNextWithRetry(iterator, maxTries) : null;
 
             // Wait for the previous page to be processed,
             // ... so the outputs from the two pages are not mixed
@@ -94,6 +96,20 @@ class Extractor {
         // Wait until all data has been sent to the PHP process
         await new Promise(resolve => jsonStream.end(resolve))
         console.log(`Fetched "${count}" items / "${i}" pages from the container "${container.id}".`)
+    }
+
+    async fetchNextWithRetry(iterator, maxTries) {
+        return promiseRetry(async () => await iterator.fetchNext(), {
+            onFailedAttempt: error => {
+                if (error.retriesLeft > 0){
+                    console.log(`${error.message}. Retrying... [${error.attemptNumber}x]`);
+                }
+            },
+            retries: maxTries - 1,
+            factor: 2, // exponential factor
+            minTimeout: 1000,
+            maxTimeout: 30000,
+        })
     }
 
     async getContainer(containerId) {

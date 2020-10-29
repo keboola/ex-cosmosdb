@@ -67,7 +67,7 @@ class ConfigTest extends AbstractTestCase
                 'name' => 'row123',
                 'containerId' => 'myContainer',
                 'output' => 'output-csv',
-                'retries' => 3,
+                'maxTries' => 3,
                 'select' => 'x.name, x.data',
                 'from' => 'x',
                 'sort' => 'x.date',

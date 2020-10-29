@@ -8,6 +8,7 @@
     "containerId": "movie",
     "output": "output-csv",
     "mode": "raw",
-    "query": "SELECT foo FROM bar"
+    "query": "SELECT foo FROM bar",
+    "maxTries": 1
   }
 }
