@@ -9,7 +9,7 @@
         "ext-pcntl": "*",
         "halaxa/json-machine": "^0.3.3",
         "keboola/csv": "^2.2",
-        "keboola/csvmap": "^1.0",
+        "keboola/csvmap": "^1.1",
         "keboola/php-component": "^8.1",
         "react/child-process": "^0.6.1",
         "react/event-loop": "^1.1",
