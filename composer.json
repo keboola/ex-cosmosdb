@@ -47,10 +47,13 @@
         "phpcs": "phpcs -n --ignore=vendor --extensions=php .",
         "phpcbf": "phpcbf -n --ignore=vendor --extensions=php .",
         "phplint": "parallel-lint -j 10 --exclude vendor .",
+        "eslint": "./node_modules/.bin/eslint --color src",
+        "eslint-fix": "./node_modules/.bin/eslint --fix --color src",
         "build": [
             "@phplint",
             "@phpcs",
             "@phpstan",
+            "@eslint",
             "@tests"
         ],
         "ci": [
