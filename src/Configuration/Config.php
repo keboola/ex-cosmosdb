@@ -34,13 +34,32 @@ class Config extends BaseConfig
         return $this->getValue(['parameters', 'output']);
     }
 
+    public function hasConfigRowId(): bool
+    {
+
+        return $this->getValue(['parameters', 'id']) !== null;
+    }
+
     public function getConfigRowId(): int
     {
+        if (!$this->hasConfigRowId()) {
+            throw new UndefinedValueException('Config row id is not defined.');
+        }
+
         return (int) $this->getValue(['parameters', 'id']);
+    }
+
+    public function hasConfigRowName(): bool
+    {
+        return $this->getValue(['parameters', 'name']) !== null;
     }
 
     public function getConfigRowName(): string
     {
+        if (!$this->hasConfigRowName()) {
+            throw new UndefinedValueException('Config row name is not defined.');
+        }
+
         return $this->getValue(['parameters', 'name']);
     }
 

@@ -5,8 +5,6 @@
       "#key": "%env(string:KEY)%",
       "databaseId": "%env(string:DATABASE_ID)%"
     },
-    "id": 123,
-    "name": "row123",
     "containerId": "simple",
     "output": "output-csv",
     "mode": "raw",

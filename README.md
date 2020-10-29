@@ -11,8 +11,8 @@ The configuration `config.json` contains following properties in `parameters` ke
     - `endpoint` - string (required): Cosmos DB [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-getting-started) endpoint.
     - `#key` - string (required): Access key.
     - `databaseId` - string (required): Database ID.
-- `id` - integer (required): `id` of the config row.
-- `name` - string (required): Name of the config row.
+- `id` - integer (optional): Id of the config row.
+- `name` - string (optional): Name of the config row.
 - `containerId` - string (required): Container is similar to table in the relational db, or collection in the MongoDB.
 - `output` - string (required): Name of the output CSV file.
 - `retries`- integer (optional): Number of the max retries if an error occurred.

@@ -5,8 +5,6 @@
       "#key": "%env(string:KEY)%",
       "databaseId": "%env(string:DATABASE_ID)%"
     },
-    "id": 123,
-    "name": "row123",
     "containerId": "fk_keys_check",
     "output": "output-csv",
     "mode": "mapping",
