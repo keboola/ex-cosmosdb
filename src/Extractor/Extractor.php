@@ -19,6 +19,8 @@ use React\EventLoop\LoopInterface;
 
 class Extractor
 {
+    public const LOG_PROGRESS_SECONDS = 30;
+
     private LoggerInterface $logger;
 
     private string $dataDir;
@@ -30,6 +32,8 @@ class Extractor
     private ProcessFactory $processFactory;
 
     private QueryFactory $queryFactory;
+
+    private int $processed;
 
     public function __construct(LoggerInterface $logger, string $dataDir, Config $config)
     {
@@ -74,6 +78,11 @@ class Extractor
     {
         $csvWriter = $this->createCsvWriter();
 
+        // Log config row name
+        if ($this->config->hasConfigRowName()) {
+            $this->logger->info(sprintf('Exporting "%s" ...', $this->config->getConfigRowName()));
+        }
+
         // Register a new NodeJs process to event loop.
         // STDOUT output is logged as info message, and STDERR as warning.
         // If the process fails, a ProcessException is thrown.
@@ -82,9 +91,11 @@ class Extractor
 
         // JSON documents separated by delimiter (see JsonDecoder) are asynchronously read and decoded
         // from the process output (on the separated file descriptor) and converted to CSV.
+        $this->processed = 0;
         $decoder = new JsonDecoder();
         $decoder->processStream($process->getJsonStream(), function (object $item) use ($csvWriter): void {
             $this->writeToCsv($item, $csvWriter);
+            $this->processed++;
         });
 
         // Throw an exception on process failure
@@ -97,6 +108,14 @@ class Extractor
                     throw new ApplicationException($e->getMessage(), $e->getCode(), $e);
                 }
             });
+
+        // Log progress
+        $this->loop->addPeriodicTimer(self::LOG_PROGRESS_SECONDS, function (): void {
+            $this->logger->info(sprintf(
+                '"%s" items processed.',
+                number_format($this->processed, 0, '.', ' ')
+            ));
+        });
 
         // Start event loop
         $this->loop->run();

@@ -1,0 +1,6 @@
+Exporting "config-row-123" ...
+Connecting to the endpoint: "%a"
+Connected to the database: "%a"
+Connected to the container: "simple"
+Running query: "SELECT * FROM c"
+Fetched "5" items / "1" pages from the container "simple".
