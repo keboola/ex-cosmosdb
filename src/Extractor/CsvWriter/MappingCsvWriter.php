@@ -31,10 +31,10 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
         // Remove ignored (generated) keys
         $item = $this->removeIgnoredKeys($item);
 
-        // Ensure unique FK for same sub-documents from the different parent document
+        // Ensure UNIQUE FK for sub-documents with the SAME CONTENT, but from the DIFFERENT parent document
         $userData = ['parentId' => md5(serialize($item))];
         try {
-            $this->mapper->parse([$item], $userData);
+            $this->mapper->parseRow($item, $userData);
         } catch (CsvMapperException $e) {
             throw new UserException($e->getMessage(), $e->getCode(), $e);
         }
