@@ -21,9 +21,10 @@ before_script:
 
 
 script:
-  # run test job inside KBC
-  # - docker run --rm -e KBC_STORAGE_TOKEN quay.io/keboola/syrup-cli:latest run-job $KBC_DEVELOPERPORTAL_APP $KBC_APP_TEST_CONFIG_ID test
-  - skip
+  # Test "raw" mode in KBC
+  - docker run --rm -e KBC_STORAGE_TOKEN quay.io/keboola/syrup-cli:latest run-job $KBC_DEVELOPERPORTAL_APP 2827483993 test
+  # Test "mapping" mode in KBC
+  - docker run --rm -e KBC_STORAGE_TOKEN quay.io/keboola/syrup-cli:latest run-job $KBC_DEVELOPERPORTAL_APP 2827495464 test
 
 deploy:
   provider: script
