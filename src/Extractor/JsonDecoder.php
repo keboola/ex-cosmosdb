@@ -56,7 +56,7 @@ class JsonDecoder
 
             // Decode JSON document, throw the JsonException on the error
             if (trim($json) !== '') {
-                yield json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+                yield json_decode($json, false, 512, JSON_THROW_ON_ERROR);
             }
         }
     }

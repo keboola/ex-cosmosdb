@@ -1,0 +1,17 @@
+{
+  "parameters": {
+    "db": {
+      "endpoint": "%env(string:ENDPOINT)%",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    },
+    "containerId": "simple",
+    "output": "output-csv",
+    "mode": "mapping",
+    "mapping": {
+      "abc": {
+        "type": "table"
+      }
+    }
+  }
+}

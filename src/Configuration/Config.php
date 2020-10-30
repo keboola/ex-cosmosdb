@@ -34,19 +34,43 @@ class Config extends BaseConfig
         return $this->getValue(['parameters', 'output']);
     }
 
+    public function hasConfigRowId(): bool
+    {
+
+        return $this->getValue(['parameters', 'id']) !== null;
+    }
+
     public function getConfigRowId(): int
     {
+        if (!$this->hasConfigRowId()) {
+            throw new UndefinedValueException('Config row id is not defined.');
+        }
+
         return (int) $this->getValue(['parameters', 'id']);
+    }
+
+    public function hasConfigRowName(): bool
+    {
+        return $this->getValue(['parameters', 'name']) !== null;
     }
 
     public function getConfigRowName(): string
     {
+        if (!$this->hasConfigRowName()) {
+            throw new UndefinedValueException('Config row name is not defined.');
+        }
+
         return $this->getValue(['parameters', 'name']);
     }
 
     public function getMaxTries(): int
     {
-        return (int) $this->getValue(['parameters', 'retries']);
+        return (int) $this->getValue(['parameters', 'maxTries']);
+    }
+
+    public function getIgnoredKeys(): array
+    {
+        return $this->getValue(['parameters', 'ignoredKeys']);
     }
 
     public function hasSelect(): bool
@@ -61,6 +85,20 @@ class Config extends BaseConfig
         }
 
         return $this->getValue(['parameters', 'select']);
+    }
+
+    public function hasFrom(): bool
+    {
+        return $this->getValue(['parameters', 'from']) !== null;
+    }
+
+    public function getFrom(): string
+    {
+        if (!$this->hasFrom()) {
+            throw new UndefinedValueException('From is not defined.');
+        }
+
+        return $this->getValue(['parameters', 'from']);
     }
 
     public function hasSort(): bool

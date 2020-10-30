@@ -1,0 +1,8 @@
+{
+    "columns": [
+        "name",
+        "movie_pk"
+    ],
+    "primary_key": [],
+    "incremental": false
+}

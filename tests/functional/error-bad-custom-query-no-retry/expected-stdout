@@ -1,0 +1,4 @@
+Connecting to the endpoint: "%a"
+Connected to the database: "%a"
+Connected to the container: "movie"
+Running query: "SELECT foo FROM bar"

@@ -1,0 +1,25 @@
+{
+  "parameters": {
+    "db": {
+      "endpoint": "%env(string:ENDPOINT)%",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    },
+    "containerId": "movie",
+    "output": "movie",
+    "mode": "mapping",
+    "mapping": {
+      "title": {
+        "type": "column",
+        "mapping": {
+          "destination": "title-id",
+          "primaryKey": true
+        }
+      },
+      "info.release_date": "release_date",
+      "missing": "missing",
+      "info.directors": { "type": "column", "mapping": { "destination": "directors" }, "forceType": true },
+      "info.actors": { "type": "table", "destination": "actor", "tableMapping": { "": "name" } }
+    }
+  }
+}

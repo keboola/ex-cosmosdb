@@ -16,7 +16,8 @@ class ConfigDefinition extends BaseConfigDefinition
     public const MODE_RAW = 'raw';
     public const MODE_MAPPING = 'mapping';
 
-    private const QUERY_INCOMPATIBLE_NODES = ['select', 'sort', 'limit', 'incrementalFetchingKey'];
+    private const DEFAULT_IGNORED_KEYS = ['_rid', '_self', '_etag', '_attachments', '_ts'];
+    private const QUERY_INCOMPATIBLE_NODES = ['select', 'from', 'sort', 'limit', 'incrementalFetchingKey'];
 
     protected function getParametersDefinition(): ArrayNodeDefinition
     {
@@ -27,13 +28,20 @@ class ConfigDefinition extends BaseConfigDefinition
             ->ignoreExtraKeys(true)
             ->children()
                 ->append(new DbNode())
-                ->integerNode('id')->isRequired()->min(0)->end()
-                ->scalarNode('name')->isRequired()->cannotBeEmpty()->end()
+                ->integerNode('id')->min(0)->defaultNull()->end()
+                ->scalarNode('name')->cannotBeEmpty()->defaultNull()->end()
                 ->scalarNode('containerId')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('output')->isRequired()->cannotBeEmpty()->end()
-                ->integerNode('retries')->min(0)->defaultValue(self::DEFAULT_MAX_TRIES)->end()
+                ->integerNode('maxTries')->min(1)->defaultValue(self::DEFAULT_MAX_TRIES)->end()
+                // Ignore generated keys by default
+                ->arrayNode('ignoredKeys')
+                    ->treatNullLike([])
+                    ->prototype('scalar')->end()
+                    ->defaultValue(self::DEFAULT_IGNORED_KEYS)
+                ->end()
                 // Generated query
                 ->scalarNode('select')->defaultNull()->cannotBeEmpty()->end()
+                ->scalarNode('from')->defaultNull()->cannotBeEmpty()->end()
                 ->scalarNode('sort')->defaultNull()->cannotBeEmpty()->end()
                 ->integerNode('limit')->defaultNull()->end()
                 // Custom query
