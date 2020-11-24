@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CosmosDbExtractor\Extractor\CsvWriter;
 
 use CosmosDbExtractor\Configuration\Config;
+use Keboola\Component\JsonHelper;
 
 abstract class BaseCsvWriter implements ICsvWriter
 {
@@ -28,5 +29,16 @@ abstract class BaseCsvWriter implements ICsvWriter
         }
 
         return $item;
+    }
+
+    protected function writeState(object $lastRow): void
+    {
+        $columnInfo = explode('.', $this->config->getIncrementalFetchingKey());
+        JsonHelper::writeFile(
+            $this->dataDir . '/out/state.json',
+            [
+                'lastFetchedRow' => $lastRow->{$columnInfo[1]},
+            ]
+        );
     }
 }

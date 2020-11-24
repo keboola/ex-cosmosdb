@@ -35,14 +35,14 @@ class Extractor
 
     private int $processed;
 
-    public function __construct(LoggerInterface $logger, string $dataDir, Config $config)
+    public function __construct(LoggerInterface $logger, string $dataDir, Config $config, array $inputState)
     {
         $this->logger = $logger;
         $this->dataDir = $dataDir;
         $this->config = $config;
         $this->loop = EventLoopFactory::create();
         $this->processFactory = new ProcessFactory($this->logger, $this->loop);
-        $this->queryFactory = new QueryFactory($this->config);
+        $this->queryFactory = new QueryFactory($this->config, $inputState);
     }
 
     public function testConnection(): void

@@ -22,6 +22,8 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
 
     private int $rows = 0;
 
+    private object $lastRow;
+
     public function __construct(string $dataDir, Config $config)
     {
         parent::__construct($dataDir, $config);
@@ -50,12 +52,16 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
             self::DATA_COLUMN => json_encode($item),
         ]);
 
+        $this->lastRow = $item;
         $this->rows++;
     }
 
     public function finalize(): void
     {
         $this->writeManifest();
+        if ($this->config->hasIncrementalFetchingKey()) {
+            $this->writeState($this->lastRow);
+        }
     }
 
     public function writeManifest(): void
