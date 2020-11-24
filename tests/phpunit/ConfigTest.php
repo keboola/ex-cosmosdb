@@ -74,7 +74,6 @@ class ConfigTest extends AbstractTestCase
                 'limit' => 500,
                 'mode' => 'raw',
                 'incremental' => true,
-                'incrementalFetchingKey' => 'a.b.c',
             ],
             [
                 'endpoint' => 'https://abc.example.com',
@@ -93,7 +92,7 @@ class ConfigTest extends AbstractTestCase
                 'mode' => 'raw',
                 'mapping' => null,
                 'isIncremental' => true,
-                'incrementalFetchingKey' => 'a.b.c',
+                'incrementalFetchingKey' => null,
             ],
         ];
 
@@ -220,6 +219,20 @@ class ConfigTest extends AbstractTestCase
                 'query' => 'SELECT name, data FROM c',
                 'select' => 'name, data',
             ],
+        ];
+
+        yield 'incremental-fetching-and-sort' => [
+            'Invalid configuration, "incrementalFetchingKey" cannot be configured together with "sort".',
+            [
+                'db' => $this->getDbNode(),
+                'id' => 123,
+                'name' => 'row123',
+                'containerId' => 'myContainer',
+                'output' => 'output-csv',
+                'mode' => 'raw',
+                'sort' => 'c.id',
+                'incrementalFetchingKey' => 'c.id',
+            ]
         ];
     }
 

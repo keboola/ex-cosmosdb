@@ -18,6 +18,7 @@ class ConfigDefinition extends BaseConfigDefinition
 
     private const DEFAULT_IGNORED_KEYS = ['_rid', '_self', '_etag', '_attachments', '_ts'];
     private const QUERY_INCOMPATIBLE_NODES = ['select', 'from', 'sort', 'limit', 'incrementalFetchingKey'];
+    private const INCREMENTAL_FETCHING_INCOMPATIBLE_NODES = ['select', 'sort'];
 
     protected function getParametersDefinition(): ArrayNodeDefinition
     {
@@ -67,6 +68,16 @@ class ConfigDefinition extends BaseConfigDefinition
                 if (isset($v['query']) && isset($v[$node])) {
                     throw new InvalidConfigurationException(sprintf(
                         'Invalid configuration, "query" cannot be configured together with "%s".',
+                        $node
+                    ));
+                }
+            }
+
+            // incrementalFetchingKey can not be used with select/sort.
+            foreach (self::INCREMENTAL_FETCHING_INCOMPATIBLE_NODES as $node) {
+                if (isset($v['incrementalFetchingKey']) && isset($v[$node])) {
+                    throw new InvalidConfigurationException(sprintf(
+                        'Invalid configuration, "incrementalFetchingKey" cannot be configured together with "%s".',
                         $node
                     ));
                 }
