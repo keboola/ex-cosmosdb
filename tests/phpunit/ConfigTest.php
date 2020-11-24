@@ -232,7 +232,7 @@ class ConfigTest extends AbstractTestCase
                 'mode' => 'raw',
                 'sort' => 'c.id',
                 'incrementalFetchingKey' => 'c.id',
-            ]
+            ],
         ];
     }
 
