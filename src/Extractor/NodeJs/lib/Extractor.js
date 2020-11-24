@@ -67,6 +67,11 @@ class Extractor {
   }
 
   async processPage(page, pageIndex, resolve) {
+    if (!page.resources) {
+      resolve(0);
+      return;
+    }
+
     let count = 0;
     page.resources.forEach((item) => {
       // Write item in JSON format, so PHP process can process it
