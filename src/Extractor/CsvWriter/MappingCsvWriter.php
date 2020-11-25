@@ -16,8 +16,6 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
 {
     private Mapper $mapper;
 
-    private object $lastRow;
-
     public function __construct(string $dataDir, Config $config)
     {
         parent::__construct($dataDir, $config);
@@ -47,9 +45,6 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
     {
         $this->copyTempCsvFiles();
         $this->writeManifest();
-        if ($this->config->hasIncrementalFetchingKey()) {
-            $this->writeState($this->lastRow);
-        }
     }
 
     protected function copyTempCsvFiles(): void

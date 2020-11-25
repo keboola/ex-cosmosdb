@@ -9,6 +9,8 @@ use Keboola\Component\Config\BaseConfig;
 
 class Config extends BaseConfig
 {
+    public const STATE_LAST_FETCHED_ROW = 'lastFetchedRow';
+
     public function getEndpoint(): string
     {
         return $this->getValue(['parameters', 'db', 'endpoint']);

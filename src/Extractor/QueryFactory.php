@@ -30,11 +30,15 @@ class QueryFactory
         $sql[] = 'FROM ' . $this->getFrom();
 
         if ($this->config->hasIncrementalFetchingKey()) {
-            if (isset($this->inputState['lastFetchedRow'])) {
+            if (isset($this->inputState[Config::STATE_LAST_FETCHED_ROW])) {
+                $lastFetchedRow = $this->inputState[Config::STATE_LAST_FETCHED_ROW];
+                if (!is_float($lastFetchedRow)) {
+                    $lastFetchedRow = $this->quote($lastFetchedRow);
+                }
                 $sql[] = sprintf(
                     'WHERE %s >= %s',
                     $this->config->getIncrementalFetchingKey(),
-                    $this->quote($this->inputState['lastFetchedRow'])
+                    $lastFetchedRow
                 );
             }
             $sql[] = 'ORDER BY ' . $this->config->getIncrementalFetchingKey();
