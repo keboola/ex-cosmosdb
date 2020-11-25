@@ -1,0 +1,13 @@
+{
+  "parameters": {
+    "db": {
+      "endpoint": "%env(string:ENDPOINT)%",
+      "#key": "%env(string:KEY)%",
+      "databaseId": "%env(string:DATABASE_ID)%"
+    },
+    "containerId": "simple",
+    "query": "SELECT * FROM c ORDER BY c.foo.bar.invalid",
+    "output": "output-csv",
+    "mode": "raw"
+  }
+}
