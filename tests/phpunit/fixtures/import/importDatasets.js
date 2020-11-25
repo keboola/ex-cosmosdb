@@ -10,7 +10,8 @@ const datasets = [
     {container: "simple", file: "simple.json", count: 5, bulkSize: 1},
     {container: "movie", file: "movie.json", count: 3, bulkSize: 1},
     {container: "fk_keys_check", file: "fk_keys_check.json", count: 4, bulkSize: 1},
-    {container: "restaurant", file: "restaurant.json", count: 25, bulkSize: 25}
+    {container: "restaurant", file: "restaurant.json", count: 25, bulkSize: 25},
+    {container: "empty", file: "empty.json", count: 0, bulkSize: 1}
 ];
 
 class Importer {

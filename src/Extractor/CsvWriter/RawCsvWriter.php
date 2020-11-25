@@ -50,6 +50,7 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
             self::DATA_COLUMN => json_encode($item),
         ]);
 
+        $this->lastRow = $item;
         $this->rows++;
     }
 

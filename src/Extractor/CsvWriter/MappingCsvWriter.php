@@ -38,6 +38,7 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
         } catch (CsvMapperException $e) {
             throw new UserException($e->getMessage(), $e->getCode(), $e);
         }
+        $this->lastRow = $item;
     }
 
     public function finalize(): void

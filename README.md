@@ -36,7 +36,7 @@ The configuration `config.json` contains following properties in `parameters` ke
     - `from` - string (optional), eg. `Families f`, default `c`, [read more](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-from).
     - `sort` - string (optional), eg. `c.date`, [read more](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-order-by).
     - `limit` - integer (optional), eg. `500`, [read more](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-query-offset-limit).
-
+    - `incrementalFetchingKey` - string (optional), eg. `c.id`, [read more](https://help.keboola.com/components/extractors/database/#incremental-fetching)
     
     
 - Or you can set **a custom query** using parameter:

@@ -33,16 +33,19 @@ class Extractor
 
     private QueryFactory $queryFactory;
 
+    private array $inputState;
+
     private int $processed;
 
-    public function __construct(LoggerInterface $logger, string $dataDir, Config $config)
+    public function __construct(LoggerInterface $logger, string $dataDir, Config $config, array $inputState)
     {
         $this->logger = $logger;
         $this->dataDir = $dataDir;
         $this->config = $config;
+        $this->inputState = $inputState;
         $this->loop = EventLoopFactory::create();
         $this->processFactory = new ProcessFactory($this->logger, $this->loop);
-        $this->queryFactory = new QueryFactory($this->config);
+        $this->queryFactory = new QueryFactory($this->config, $inputState);
     }
 
     public function testConnection(): void
@@ -122,6 +125,11 @@ class Extractor
 
         // All items wrote, finalize
         $csvWriter->finalize();
+
+        // Write last state incremental fetching
+        if ($this->config->hasIncrementalFetchingKey()) {
+            $csvWriter->writeLastState($this->inputState);
+        }
     }
 
     protected function writeToCsv(object $item, ICsvWriter $csvWriter): void

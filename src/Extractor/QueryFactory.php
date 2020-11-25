@@ -10,9 +10,12 @@ class QueryFactory
 {
     private Config $config;
 
-    public function __construct(Config $config)
+    private array $inputState;
+
+    public function __construct(Config $config, array $inputState)
     {
         $this->config = $config;
+        $this->inputState = $inputState;
     }
 
     public function create(): string
@@ -26,7 +29,20 @@ class QueryFactory
         $sql[] = 'SELECT ' . $this->getSelect();
         $sql[] = 'FROM ' . $this->getFrom();
 
-        if ($this->config->hasSort()) {
+        if ($this->config->hasIncrementalFetchingKey()) {
+            if (isset($this->inputState[Config::STATE_LAST_FETCHED_ROW])) {
+                $lastFetchedRow = $this->inputState[Config::STATE_LAST_FETCHED_ROW];
+                if (is_string($lastFetchedRow)) {
+                    $lastFetchedRow = $this->quote($lastFetchedRow);
+                }
+                $sql[] = sprintf(
+                    'WHERE %s >= %s',
+                    $this->config->getIncrementalFetchingKey(),
+                    $lastFetchedRow
+                );
+            }
+            $sql[] = 'ORDER BY ' . $this->config->getIncrementalFetchingKey();
+        } elseif ($this->config->hasSort()) {
             $sql[] = 'ORDER BY ' . $this->config->getSort();
         }
 
@@ -45,5 +61,10 @@ class QueryFactory
     protected function getFrom(): string
     {
         return $this->config->hasFrom() ? $this->config->getFrom() : 'c';
+    }
+
+    protected function quote(string $str): string
+    {
+        return sprintf('"%s"', $str);
     }
 }

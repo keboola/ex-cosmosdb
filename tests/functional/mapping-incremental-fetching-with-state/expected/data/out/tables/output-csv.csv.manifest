@@ -1,0 +1,9 @@
+{
+    "columns": [
+        "id",
+        "full_name",
+        "age"
+    ],
+    "primary_key": [],
+    "incremental": false
+}
