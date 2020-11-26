@@ -155,7 +155,8 @@ class Extractor {
           throw new UserError('Cannot connect: Invalid key.');
 
         default:
-          throw new UserError(`Cannot connect: ${e.message}`);
+          const msg = e.message || e;
+          throw new UserError(`Cannot connect: ${msg}`);
       }
     }
   }
