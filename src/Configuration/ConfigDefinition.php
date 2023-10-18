@@ -20,12 +20,22 @@ class ConfigDefinition extends BaseConfigDefinition
     private const QUERY_INCOMPATIBLE_NODES = ['select', 'from', 'sort', 'limit', 'incrementalFetchingKey'];
     private const INCREMENTAL_FETCHING_INCOMPATIBLE_NODES = ['select', 'sort'];
 
+    private const REMOVE_EMPTY_NODES = ['select', 'from', 'sort', 'query'];
+
     protected function getParametersDefinition(): ArrayNodeDefinition
     {
         $parametersNode = parent::getParametersDefinition();
         // @formatter:off
         /** @noinspection NullPointerExceptionInspection */
         $parametersNode
+            ->validate()->always(function ($item) {
+                foreach (self::REMOVE_EMPTY_NODES as $removeEmptyNode) {
+                    if (empty($item[$removeEmptyNode])) {
+                        unset($item[$removeEmptyNode]);
+                    }
+                }
+                return $item;
+            })->end()->end()
             ->ignoreExtraKeys(true)
             ->children()
                 ->append(new DbNode())
