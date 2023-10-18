@@ -1,7 +1,5 @@
 # Cosmos DB Extractor
 
-[![Build Status](https://travis-ci.com/keboola/ex-cosmosdb.svg?branch=master)](https://travis-ci.com/keboola/my-component)
-
 [CosmosDB](https://azure.microsoft.com/en-us/free/cosmos-db) extractor for the [Keboola Connection](https://www.keboola.com).
 
 ## Configuration

@@ -19,6 +19,7 @@ class ConfigDefinition extends BaseConfigDefinition
     private const DEFAULT_IGNORED_KEYS = ['_rid', '_self', '_etag', '_attachments', '_ts'];
     private const QUERY_INCOMPATIBLE_NODES = ['select', 'from', 'sort', 'limit', 'incrementalFetchingKey'];
     private const INCREMENTAL_FETCHING_INCOMPATIBLE_NODES = ['select', 'sort'];
+    private const REMOVE_EMPTY_NODES = ['select', 'from', 'sort', 'query', 'mapping', 'incrementalFetchingKey'];
 
     protected function getParametersDefinition(): ArrayNodeDefinition
     {
@@ -41,9 +42,9 @@ class ConfigDefinition extends BaseConfigDefinition
                     ->defaultValue(self::DEFAULT_IGNORED_KEYS)
                 ->end()
                 // Generated query
-                ->scalarNode('select')->defaultNull()->cannotBeEmpty()->end()
-                ->scalarNode('from')->defaultNull()->cannotBeEmpty()->end()
-                ->scalarNode('sort')->defaultNull()->cannotBeEmpty()->end()
+                ->scalarNode('select')->defaultNull()->end()
+                ->scalarNode('from')->defaultNull()->end()
+                ->scalarNode('sort')->defaultNull()->end()
                 ->integerNode('limit')->defaultNull()->end()
                 // Custom query
                 ->scalarNode('query')->defaultNull()->cannotBeEmpty()->end()
@@ -57,7 +58,15 @@ class ConfigDefinition extends BaseConfigDefinition
                 ->booleanNode('incremental')->defaultValue(false)->end()
                 // Incremental fetching
                 ->scalarNode('incrementalFetchingKey')->defaultNull()->end()
-
+            ->end()
+            ->validate()->always(function ($item) {
+                foreach (self::REMOVE_EMPTY_NODES as $removeEmptyNode) {
+                    if (empty($item[$removeEmptyNode])) {
+                        $item[$removeEmptyNode] = null;
+                    }
+                }
+                return $item;
+            })->end()
         ;
         // @formatter:on
 
