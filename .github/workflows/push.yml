@@ -88,7 +88,13 @@ jobs:
           tag_as_latest: true
       -
         name: Run tests
-        run: docker run ${{env.APP_IMAGE}} composer ci
+        run: |
+          docker run \
+          -e KEY \
+          -e ENDPOINT \
+          -e DATABASE_ID \
+          ${{env.APP_IMAGE}} \
+          composer ci
 
   tests-in-kbc:
     needs: build
