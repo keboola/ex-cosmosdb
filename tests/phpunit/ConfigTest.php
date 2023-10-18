@@ -125,6 +125,25 @@ class ConfigTest extends AbstractTestCase
                 'isIncremental' => false,
                 'incrementalFetchingKey' => null,
             ],
+            [
+                'endpoint' => 'https://abc.example.com',
+                'key' => '12345',
+                'databaseId' => 'myDatabase',
+                'containerId' => 'myContainer',
+                'output' => 'output-csv',
+                'configRowId' => 123,
+                'configRowName' => 'row123',
+                'maxTries' => 5,
+                'select' => "",
+                'from' => "",
+                'sort' => "",
+                'limit' => null,
+                'query' => 'SELECT name, data FROM c',
+                'mode' => 'raw',
+                'mapping' => "",
+                'isIncremental' => false,
+                'incrementalFetchingKey' => "",
+            ],
         ];
 
         yield 'mapping' => [
