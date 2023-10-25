@@ -192,6 +192,37 @@ class ConfigTest extends AbstractTestCase
                 'incrementalFetchingKey' => null,
             ],
         ];
+
+        yield 'raw-mapping' => [
+            [
+                'db' => $this->getDbNode(),
+                'id' => 123,
+                'name' => 'row123',
+                'containerId' => 'myContainer',
+                'output' => 'output-csv',
+                'mode' => 'raw',
+                'mapping' => ['abc' => 'def'],
+            ],
+            [
+                'endpoint' => 'https://abc.example.com',
+                'key' => '12345',
+                'databaseId' => 'myDatabase',
+                'containerId' => 'myContainer',
+                'output' => 'output-csv',
+                'configRowId' => 123,
+                'configRowName' => 'row123',
+                'maxTries' => 5,
+                'select' => null,
+                'from' => null,
+                'sort' => null,
+                'limit' => null,
+                'query' => null,
+                'mode' => 'raw',
+                'mapping' => null,
+                'isIncremental' => false,
+                'incrementalFetchingKey' => null,
+            ],
+        ];
     }
 
     public function getInvalidConfigs(): iterable
@@ -210,19 +241,6 @@ class ConfigTest extends AbstractTestCase
                 'containerId' => 'myContainer',
                 'output' => 'output-csv',
                 'mode' => 'mapping',
-            ],
-        ];
-
-        yield 'unexpected-mapping' => [
-            'Invalid configuration, "mapping" is configured, but mode is set to "raw".',
-            [
-                'db' => $this->getDbNode(),
-                'id' => 123,
-                'name' => 'row123',
-                'containerId' => 'myContainer',
-                'output' => 'output-csv',
-                'mode' => 'raw',
-                'mapping' => ['abc' => 'def'],
             ],
         ];
 
