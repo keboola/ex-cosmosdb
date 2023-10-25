@@ -95,11 +95,7 @@ class ConfigDefinition extends BaseConfigDefinition
             // Validate mode
             switch ($v['mode']) {
                 case self::MODE_RAW:
-                    if (isset($v['mapping'])) {
-                        throw new InvalidConfigurationException(
-                            'Invalid configuration, "mapping" is configured, but mode is set to "raw".'
-                        );
-                    }
+                    unset($v['mapping']);
                     break;
 
                 case self::MODE_MAPPING:
