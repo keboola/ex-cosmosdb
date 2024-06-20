@@ -12,6 +12,7 @@
     "no-console": "off",
     "no-constant-condition": "off",
     "no-await-in-loop": "off",
-    "no-case-declarations": "off"
+    "no-case-declarations": "off",
+    "import/extensions": "off"
   }
 }

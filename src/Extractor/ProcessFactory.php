@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Extractor;
 
-use Generator;
 use CosmosDbExtractor\Exception\ProcessException;
+use Generator;
 use Psr\Log\LoggerInterface;
 use React\ChildProcess\Process;
 use React\EventLoop\LoopInterface;
@@ -25,17 +25,20 @@ class ProcessFactory
         $this->loop = $loop;
     }
 
+    /**
+     * @param array<string,mixed> $env
+     */
     public function create(string $cmd, array $env = []): ProcessWrapper
     {
         $fileDescriptors = [
             // STDIN
-            0 => array('pipe', 'r'),
+            0 => ['pipe', 'r'],
             // STDOUT
-            1 => array('pipe', 'w'),
+            1 => ['pipe', 'w'],
             // STDERR
-            2 => array('pipe', 'w'),
+            2 => ['pipe', 'w'],
             // JSON STREAM (custom)
-            self::JSON_STREAM_FD => array('pipe', 'w'),
+            self::JSON_STREAM_FD => ['pipe', 'w'],
         ];
 
         // Let NodeJs script know which file descriptor should be used to write JSON documents to
@@ -67,7 +70,7 @@ class ProcessFactory
                 $deferred->resolve();
             } else {
                 $deferred->reject(
-                    new ProcessException(sprintf('Process "%s" exited with code "%d".', $cmd, $exitCode), $exitCode)
+                    new ProcessException(sprintf('Process "%s" exited with code "%d".', $cmd, $exitCode), $exitCode),
                 );
             }
 
@@ -78,6 +81,9 @@ class ProcessFactory
         return new ProcessWrapper($process, $deferred->promise());
     }
 
+    /**
+     * @return Generator<string>
+     */
     private function explodeLines(string $str): Generator
     {
         foreach (explode("\n", $str) as $line) {

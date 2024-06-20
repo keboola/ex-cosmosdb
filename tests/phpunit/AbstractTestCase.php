@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Tests;
 
-use CosmosDbExtractor\Extractor\ProcessWrapper;
-use JsonException;
-use CosmosDbExtractor\Extractor\JsonDecoder;
+use ColinODell\PsrTestLogger\TestLogger;
 use CosmosDbExtractor\Extractor\ProcessFactory;
-use PHPUnit\Framework\Assert;
+use CosmosDbExtractor\Extractor\ProcessWrapper;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
-use Psr\Log\Test\TestLogger;
-use React\ChildProcess\Process;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Extractor\CsvWriter;
 
+use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Exception\ApplicationException;
 use CosmosDbExtractor\Exception\UserException;
-use CosmosDbExtractor\Configuration\Config;
 use Keboola\Component\JsonHelper;
 use Keboola\Csv\CsvWriter;
 
@@ -67,6 +67,9 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
         }
     }
 
+    /**
+     * @return array{columns: array<string>, primary_key: array<string>, incremental: bool}
+     */
     protected function getManifest(): array
     {
         return [
@@ -87,7 +90,7 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
                 throw new UserException(
                     'Missing "id" key in the query results. ' .
                     'Please modify the "select" value in the configuration ' .
-                    'or use the "mapping" mode instead of the "raw".'
+                    'or use the "mapping" mode instead of the "raw".',
                 );
             } else {
                 throw new ApplicationException('Missing "id" key in the query results.');

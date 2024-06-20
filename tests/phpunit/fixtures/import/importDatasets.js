@@ -1,8 +1,9 @@
 'use strict';
 
-const fs = require('fs')
-const readline = require('readline');
-const {CosmosClient} = require("@azure/cosmos");
+import fs from 'fs';
+import readline from 'readline';
+import {CosmosClient} from '@azure/cosmos';
+
 
 // List of the datasets
 const datasets = [

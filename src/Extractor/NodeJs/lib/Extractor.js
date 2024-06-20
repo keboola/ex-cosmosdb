@@ -1,12 +1,12 @@
 'use strict';
 
-const { CosmosClient } = require('@azure/cosmos');
-const promiseRetry = require('p-retry');
-const UserError = require('./UserError.js');
-const ApplicationError = require('./ApplicationError.js');
-const jsonStream = require('./jsonStream.js');
+import promiseRetry from 'p-retry';
+import { CosmosClient } from '@azure/cosmos';
+import UserError from './UserError.js';
+import ApplicationError from './ApplicationError.js';
+import jsonStream from './jsonStream.js';
 
-class Extractor {
+export default class Extractor {
   static async fetchNextWithRetry(iterator, maxTries) {
     return promiseRetry(async () => iterator.fetchNext(), {
       onFailedAttempt: (error) => {
@@ -161,5 +161,3 @@ class Extractor {
     }
   }
 }
-
-module.exports = Extractor;

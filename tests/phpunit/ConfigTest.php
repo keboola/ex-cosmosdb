@@ -13,6 +13,8 @@ class ConfigTest extends AbstractTestCase
 {
     /**
      * @dataProvider getValidConfigs
+     * @param array<string,mixed> $input
+     * @param array<string,mixed> $expected
      */
     public function testValidConfig(array $input, array $expected): void
     {
@@ -22,14 +24,18 @@ class ConfigTest extends AbstractTestCase
 
     /**
      * @dataProvider getInvalidConfigs
+     * @param array<string,mixed> $input
      */
     public function testInvalidConfig(string $expectedMsg, array $input): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectDeprecationMessage($expectedMsg);
+        $this->expectExceptionMessage($expectedMsg);
         new Config(['parameters' => $input], new ConfigDefinition());
     }
 
+    /**
+     * @return iterable<string,array{array<string,mixed>,array<string,mixed>}>
+     */
     public function getValidConfigs(): iterable
     {
         yield 'minimal' => [
@@ -225,10 +231,13 @@ class ConfigTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @return iterable<string,array{string,array<string,mixed>}>
+     */
     public function getInvalidConfigs(): iterable
     {
         yield 'empty' => [
-            'The child node "db" at path "root.parameters" must be configured.',
+            'The child config "db" under "root.parameters" must be configured.',
             [],
         ];
 
@@ -273,6 +282,9 @@ class ConfigTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     private function configToArray(Config $config): array
     {
         return [
@@ -297,6 +309,9 @@ class ConfigTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @return array<string,string>
+     */
     private function getDbNode(): array
     {
         return [

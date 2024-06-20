@@ -13,27 +13,27 @@ class Config extends BaseConfig
 
     public function getEndpoint(): string
     {
-        return $this->getValue(['parameters', 'db', 'endpoint']);
+        return $this->getStringValue(['parameters', 'db', 'endpoint']);
     }
 
     public function getKey(): string
     {
-        return $this->getValue(['parameters', 'db', '#key']);
+        return $this->getStringValue(['parameters', 'db', '#key']);
     }
 
     public function getDatabaseId(): string
     {
-        return $this->getValue(['parameters', 'db', 'databaseId']);
+        return $this->getStringValue(['parameters', 'db', 'databaseId']);
     }
 
     public function getContainerId(): string
     {
-        return $this->getValue(['parameters', 'containerId']);
+        return $this->getStringValue(['parameters', 'containerId']);
     }
 
     public function getOutput(): string
     {
-        return $this->getValue(['parameters', 'output']);
+        return $this->getStringValue(['parameters', 'output']);
     }
 
     public function hasConfigRowId(): bool
@@ -48,7 +48,7 @@ class Config extends BaseConfig
             throw new UndefinedValueException('Config row id is not defined.');
         }
 
-        return (int) $this->getValue(['parameters', 'id']);
+        return $this->getIntValue(['parameters', 'id']);
     }
 
     public function hasConfigRowName(): bool
@@ -62,17 +62,20 @@ class Config extends BaseConfig
             throw new UndefinedValueException('Config row name is not defined.');
         }
 
-        return $this->getValue(['parameters', 'name']);
+        return $this->getStringValue(['parameters', 'name']);
     }
 
     public function getMaxTries(): int
     {
-        return (int) $this->getValue(['parameters', 'maxTries']);
+        return $this->getIntValue(['parameters', 'maxTries']);
     }
 
+    /**
+     * @return array<string>
+     */
     public function getIgnoredKeys(): array
     {
-        return $this->getValue(['parameters', 'ignoredKeys']);
+        return $this->getArrayValue(['parameters', 'ignoredKeys']);
     }
 
     public function hasSelect(): bool
@@ -86,7 +89,7 @@ class Config extends BaseConfig
             throw new UndefinedValueException('Select is not defined.');
         }
 
-        return $this->getValue(['parameters', 'select']);
+        return $this->getStringValue(['parameters', 'select']);
     }
 
     public function hasFrom(): bool
@@ -100,7 +103,7 @@ class Config extends BaseConfig
             throw new UndefinedValueException('From is not defined.');
         }
 
-        return $this->getValue(['parameters', 'from']);
+        return $this->getStringValue(['parameters', 'from']);
     }
 
     public function hasSort(): bool
@@ -114,7 +117,7 @@ class Config extends BaseConfig
             throw new UndefinedValueException('Sort is not defined.');
         }
 
-        return $this->getValue(['parameters', 'sort']);
+        return $this->getStringValue(['parameters', 'sort']);
     }
 
     public function hasLimit(): bool
@@ -128,7 +131,7 @@ class Config extends BaseConfig
             throw new UndefinedValueException('Limit is not defined.');
         }
 
-        return (int) $this->getValue(['parameters', 'limit']);
+        return $this->getIntValue(['parameters', 'limit']);
     }
 
     public function hasQuery(): bool
@@ -147,16 +150,19 @@ class Config extends BaseConfig
 
     public function getMode(): string
     {
-        return $this->getValue(['parameters', 'mode']);
+        return $this->getStringValue(['parameters', 'mode']);
     }
 
+    /**
+     * @return string[]
+     */
     public function getMapping(): array
     {
         if ($this->getMode() !== ConfigDefinition::MODE_MAPPING) {
             throw new UndefinedValueException('Mode is not set to mapping.');
         }
 
-        return $this->getValue(['parameters', 'mapping']);
+        return $this->getArrayValue(['parameters', 'mapping']);
     }
 
     public function isIncremental(): bool
@@ -175,6 +181,6 @@ class Config extends BaseConfig
             throw new UndefinedValueException('IncrementalFetchingKey is not defined.');
         }
 
-        return $this->getValue(['parameters', 'incrementalFetchingKey']);
+        return $this->getStringValue(['parameters', 'incrementalFetchingKey']);
     }
 }

@@ -77,7 +77,7 @@ class ConfigDefinition extends BaseConfigDefinition
                 if (isset($v['query']) && isset($v[$node])) {
                     throw new InvalidConfigurationException(sprintf(
                         'Invalid configuration, "query" cannot be configured together with "%s".',
-                        $node
+                        $node,
                     ));
                 }
             }
@@ -87,7 +87,7 @@ class ConfigDefinition extends BaseConfigDefinition
                 if (isset($v['incrementalFetchingKey']) && isset($v[$node])) {
                     throw new InvalidConfigurationException(sprintf(
                         'Invalid configuration, "incrementalFetchingKey" cannot be configured together with "%s".',
-                        $node
+                        $node,
                     ));
                 }
             }
@@ -101,7 +101,7 @@ class ConfigDefinition extends BaseConfigDefinition
                 case self::MODE_MAPPING:
                     if (!isset($v['mapping'])) {
                         throw new InvalidConfigurationException(
-                            'Invalid configuration, missing "mapping" key, mode is set to "mapping".'
+                            'Invalid configuration, missing "mapping" key, mode is set to "mapping".',
                         );
                     }
                     break;
