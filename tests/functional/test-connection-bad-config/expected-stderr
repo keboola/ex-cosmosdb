@@ -1,1 +1,1 @@
-%aThe child node "db" at path "root.parameters" must be configured.%a
+The child config "db" under "root.parameters" must be configured.
