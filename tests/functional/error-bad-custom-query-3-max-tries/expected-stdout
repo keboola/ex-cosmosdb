@@ -2,5 +2,5 @@ Connecting to the endpoint: "%a"
 Connected to the database: "%a"
 Connected to the container: "movie"
 Running query: "SELECT foo FROM bar"
-%AIdentifier 'foo' could not be resolved.%A Retrying... [1x]
-%AIdentifier 'foo' could not be resolved.%A Retrying... [2x]
+%AOne of the input values is invalid.%A Retrying... [1x]
+%AOne of the input values is invalid.%A Retrying... [2x]
