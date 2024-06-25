@@ -145,7 +145,7 @@ class Config extends BaseConfig
             throw new UndefinedValueException('Query is not defined.');
         }
 
-        return $this->getValue(['parameters', 'query']);
+        return $this->getStringValue(['parameters', 'query']);
     }
 
     public function getMode(): string
