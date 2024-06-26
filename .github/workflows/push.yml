@@ -24,6 +24,7 @@ env:
   KBC_STORAGE_TOKEN: ${{ secrets.KBC_STORAGE_TOKEN }}
   KBC_TEST_PROJECT_URL: "https://connection.keboola.com/admin/projects/2703/dashboard"
   KBC_TEST_PROJECT_CONFIGS: "2827483993 2827495464 2906467182" # space separated list
+  KBC_DATA_TYPE_SUPPORT: "none"
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -93,6 +94,7 @@ jobs:
           -e KEY \
           -e ENDPOINT \
           -e DATABASE_ID \
+          -e KBC_DATA_TYPE_SUPPORT \
           ${{env.APP_IMAGE}} \
           composer ci
 

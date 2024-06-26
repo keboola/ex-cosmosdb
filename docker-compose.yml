@@ -8,3 +8,4 @@ services:
       - ENDPOINT
       - KEY
       - DATABASE_ID
+      - KBC_DATA_TYPE_SUPPORT=none
