@@ -14,6 +14,9 @@ abstract class BaseCsvWriter implements ICsvWriter
 
     protected Config $config;
 
+    /**
+     * @var string[]
+     */
     protected array $ignoredKeys;
 
     protected ?object $lastRow = null;
@@ -25,13 +28,16 @@ abstract class BaseCsvWriter implements ICsvWriter
         $this->ignoredKeys = $config->getIgnoredKeys();
     }
 
+    /**
+     * @param array<mixed> $inputState
+     */
     public function writeLastState(array $inputState): void
     {
         $lastValue = null;
         if ($this->lastRow) {
             $lastValue = $this->getValueFromRow(
                 $this->lastRow,
-                $this->config->getIncrementalFetchingKey()
+                $this->config->getIncrementalFetchingKey(),
             );
         } elseif (isset($inputState[Config::STATE_LAST_FETCHED_ROW])) {
             $lastValue = $inputState[Config::STATE_LAST_FETCHED_ROW];
@@ -42,7 +48,7 @@ abstract class BaseCsvWriter implements ICsvWriter
                 $this->dataDir . '/out/state.json',
                 [
                     Config::STATE_LAST_FETCHED_ROW => $lastValue,
-                ]
+                ],
             );
         }
     }
@@ -56,10 +62,7 @@ abstract class BaseCsvWriter implements ICsvWriter
         return $item;
     }
 
-    /**
-     * @return mixed
-     */
-    protected function getValueFromRow(object $lastRow, string $pathString)
+    protected function getValueFromRow(object $lastRow, string $pathString): mixed
     {
         $path = explode('.', $pathString);
         array_shift($path);

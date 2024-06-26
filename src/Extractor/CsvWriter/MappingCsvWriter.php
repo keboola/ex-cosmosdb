@@ -96,11 +96,16 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
         }
     }
 
+    /**
+     * @return array{columns: array<string>, primary_key: array<string>, incremental: bool}
+     */
     protected function getManifest(Table $csvTable): array
     {
+        /** @var string[]|null $primaryKey */
+        $primaryKey = $csvTable->getPrimaryKey(true);
         return [
             'columns' => $csvTable->getHeader(),
-            'primary_key' => $csvTable->getPrimaryKey(true) ?? [],
+            'primary_key' => $primaryKey ?? [],
             'incremental' => $this->config->isIncremental(),
         ];
     }

@@ -7,8 +7,8 @@ namespace CosmosDbExtractor;
 use CosmosDbExtractor\Configuration\ActionConfigDefinition;
 use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Configuration\ConfigDefinition;
-use Keboola\Component\BaseComponent;
 use CosmosDbExtractor\Extractor\Extractor;
+use Keboola\Component\BaseComponent;
 use Psr\Log\LoggerInterface;
 
 class Component extends BaseComponent
@@ -25,10 +25,13 @@ class Component extends BaseComponent
             $this->getLogger(),
             $this->getDataDir(),
             $this->getConfig(),
-            $this->getInputState()
+            $this->getInputState(),
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
     protected function getSyncActions(): array
     {
         return [
@@ -41,6 +44,9 @@ class Component extends BaseComponent
         $this->extractor->extract();
     }
 
+    /**
+     * @return array{success: bool}
+     */
     protected function handleTestConnection(): array
     {
         $this->extractor->testConnection();

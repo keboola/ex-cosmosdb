@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Tests;
 
-use JsonException;
 use CosmosDbExtractor\Extractor\JsonDecoder;
+use JsonException;
 use PHPUnit\Framework\Assert;
 
 class JsonDecoderTest extends AbstractTestCase
@@ -20,6 +20,7 @@ class JsonDecoderTest extends AbstractTestCase
 
     /**
      * @dataProvider getValidScripts
+     * @param array<int, array<string,string>> $expectedDocuments
      */
     public function testValidJson(string $script, array $expectedDocuments): void
     {
@@ -30,7 +31,7 @@ class JsonDecoderTest extends AbstractTestCase
             function (object $document) use (&$parsedDocuments): void {
                 // Convert object to array for asserts
                 $parsedDocuments[] = (array) $document;
-            }
+            },
         );
 
         $this->loop->run();
@@ -51,6 +52,9 @@ class JsonDecoderTest extends AbstractTestCase
         $this->loop->run();
     }
 
+    /**
+     * @return array<string, array{string, array<int, array<string,string>>}>
+     */
     public function getValidScripts(): array
     {
         return [
@@ -82,6 +86,9 @@ class JsonDecoderTest extends AbstractTestCase
         ];
     }
 
+    /**
+     * @return array<string, array{string}>
+     */
     public function getInvalidScripts(): array
     {
         return [

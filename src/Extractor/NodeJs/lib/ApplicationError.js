@@ -1,4 +1,3 @@
 'use strict';
 
-class ApplicationError extends Error {}
-module.exports = ApplicationError;
+export default class ApplicationError extends Error {}

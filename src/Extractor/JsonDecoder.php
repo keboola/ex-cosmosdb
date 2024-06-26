@@ -6,6 +6,7 @@ namespace CosmosDbExtractor\Extractor;
 
 use Generator;
 use React\Stream\ReadableStreamInterface;
+use Throwable;
 
 /**
  * JsonDecoder decodes a stream of JSON documents separated by the DELIMITER.
@@ -18,6 +19,9 @@ class JsonDecoder
 
     private string $buffer = '';
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingTraversableTypeHintSpecification
+     */
     public function processChunk(string $chunk): array
     {
         $this->buffer .= $chunk;
@@ -41,7 +45,7 @@ class JsonDecoder
         });
 
         // Throw exception when it occurs
-        $stream->on('error', function (\Throwable $e): void {
+        $stream->on('error', function (Throwable $e): void {
             throw $e;
         });
     }

@@ -1,4 +1,4 @@
-FROM php:7.4-cli
+FROM php:8.3-cli
 
 ARG COMPOSER_FLAGS="--prefer-dist --no-interaction"
 ARG DEBIAN_FRONTEND=noninteractive
@@ -30,7 +30,7 @@ RUN docker-php-ext-install sockets \
 
 # Install ext-event for react-php
 RUN pecl install event \
-    && docker-php-ext-enable event
+    && docker-php-ext-enable --ini-name zz-event.ini event
 
 ENV LANGUAGE=en_US.UTF-8
 ENV LANG=en_US.UTF-8

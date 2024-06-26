@@ -1,7 +1,6 @@
 'use strict';
 
-const fs = require('fs');
-
+import fs from 'fs';
 // We are using separated file descriptor to output JSON documents
 // Default file descriptors are used: STDOUT to log info messages and STDERR to log warnings.
 // Number of the custom file descriptor is loaded from ENV (set by PHP), ... fallback is STDOUT.
@@ -12,4 +11,4 @@ if (process.env.JSON_STREAM_FD !== undefined) {
   console.error('Please, set env variable "JSON_STREAM_FD". Using STDOUT as fallback.');
   jsonStreamFd = process.stdout.fd;
 }
-module.exports = fs.createWriteStream(null, { fd: jsonStreamFd });
+export default fs.createWriteStream(null, { fd: jsonStreamFd });

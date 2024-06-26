@@ -10,8 +10,14 @@ class QueryFactory
 {
     private Config $config;
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification
+     */
     private array $inputState;
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification
+     */
     public function __construct(Config $config, array $inputState)
     {
         $this->config = $config;
@@ -38,7 +44,7 @@ class QueryFactory
                 $sql[] = sprintf(
                     'WHERE %s >= %s',
                     $this->config->getIncrementalFetchingKey(),
-                    $lastFetchedRow
+                    $lastFetchedRow,
                 );
             }
             $sql[] = 'ORDER BY ' . $this->config->getIncrementalFetchingKey();

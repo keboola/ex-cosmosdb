@@ -1,4 +1,4 @@
-const jsonStream = require('../../../../src/Extractor/NodeJs/lib/jsonStream.js');
+import jsonStream from '../../../../src/Extractor/NodeJs/lib/jsonStream.js';
 
 async function sleep() {
     await new Promise(resolve => setTimeout(resolve, 250));

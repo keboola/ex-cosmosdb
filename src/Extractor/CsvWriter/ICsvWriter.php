@@ -18,6 +18,7 @@ interface ICsvWriter
 
     /**
      * Write last state for incremental fetching
+     * @param array<mixed> $inputState
      */
     public function writeLastState(array $inputState): void;
 }

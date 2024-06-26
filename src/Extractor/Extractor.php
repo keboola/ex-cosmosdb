@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace CosmosDbExtractor\Extractor;
 
-use CosmosDbExtractor\Extractor\CsvWriter\MappingCsvWriter;
-use CosmosDbExtractor\Extractor\CsvWriter\RawCsvWriter;
-use UnexpectedValueException;
 use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Configuration\ConfigDefinition;
 use CosmosDbExtractor\Exception\ApplicationException;
 use CosmosDbExtractor\Exception\ProcessException;
 use CosmosDbExtractor\Exception\UserException;
 use CosmosDbExtractor\Extractor\CsvWriter\ICsvWriter;
+use CosmosDbExtractor\Extractor\CsvWriter\MappingCsvWriter;
+use CosmosDbExtractor\Extractor\CsvWriter\RawCsvWriter;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\Factory as EventLoopFactory;
 use React\EventLoop\LoopInterface;
+use Throwable;
+use UnexpectedValueException;
 
 class Extractor
 {
@@ -33,10 +34,16 @@ class Extractor
 
     private QueryFactory $queryFactory;
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification
+     */
     private array $inputState;
 
     private int $processed;
 
+    /**
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingTraversableTypeHintSpecification
+     */
     public function __construct(LoggerInterface $logger, string $dataDir, Config $config, array $inputState)
     {
         $this->logger = $logger;
@@ -64,7 +71,7 @@ class Extractor
         // Convert process failure to User/Application exception
         $process
             ->getPromise()
-            ->done(null, function (\Throwable $e) use (&$stderr): void {
+            ->done(null, function (Throwable $e) use (&$stderr): void {
                 $msg = trim($stderr ?: $e->getMessage());
                 if ($e instanceof ProcessException && $e->getExitCode() === 1) {
                     throw new UserException($msg, $e->getCode(), $e);
@@ -104,7 +111,7 @@ class Extractor
         // Throw an exception on process failure
         $process
             ->getPromise()
-            ->done(null, function (\Throwable $e): void {
+            ->done(null, function (Throwable $e): void {
                 if ($e instanceof ProcessException && $e->getExitCode() === 1) {
                     throw new UserException('Export failed.', $e->getCode(), $e);
                 } else {
@@ -116,7 +123,7 @@ class Extractor
         $this->loop->addPeriodicTimer(self::LOG_PROGRESS_SECONDS, function (): void {
             $this->logger->info(sprintf(
                 '"%s" items processed.',
-                number_format($this->processed, 0, '.', ' ')
+                number_format($this->processed, 0, '.', ' '),
             ));
         });
 
@@ -137,6 +144,9 @@ class Extractor
         $csvWriter->writeItem($item);
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function getTestConnectionEnv(): array
     {
         return [
@@ -147,6 +157,9 @@ class Extractor
         ];
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function getExtractEnv(): array
     {
         return array_merge($this->getTestConnectionEnv(), [
@@ -156,6 +169,9 @@ class Extractor
         ]);
     }
 
+    /**
+     * @param array<string,mixed> $env
+     */
     protected function createNodeJsProcess(string $script, array $env): ProcessWrapper
     {
         return $this->processFactory->create(sprintf('node %s/NodeJs/%s', __DIR__, $script), $env);
