@@ -3,14 +3,14 @@
     "description": "CosmosDB extractor for Keboola Connection.",
     "license": "MIT",
     "require": {
-        "php": "^8",
+        "php": "^8.3",
         "ext-event": "*",
         "ext-json": "*",
         "ext-pcntl": "*",
         "halaxa/json-machine": "^0.3.3",
         "keboola/csv": "^3",
         "keboola/csvmap": "^2",
-        "keboola/php-component": "^9",
+        "keboola/php-component": "^10",
         "react/child-process": "^0.6.1",
         "react/event-loop": "^1",
         "react/promise": "^2.8"
