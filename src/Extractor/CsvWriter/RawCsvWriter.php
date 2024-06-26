@@ -71,7 +71,7 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
                 ->setIncremental($this->config->isIncremental());
 
             $this->manifestManager->writeTableManifest(
-                $this->config->getOutput(),
+                $this->config->getOutput().'.csv',
                 $options,
                 $this->config->getDataTypeSupport()->usingLegacyManifest(),
             );

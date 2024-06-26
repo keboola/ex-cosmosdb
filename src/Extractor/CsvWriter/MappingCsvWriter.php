@@ -101,7 +101,7 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
                 ->setIncremental($this->config->isIncremental());
 
             $this->manifestManager->writeTableManifest(
-                $csvTable->getName(),
+                $csvTable->getName() . '.csv',
                 $options,
                 $this->config->getDataTypeSupport()->usingLegacyManifest(),
             );
