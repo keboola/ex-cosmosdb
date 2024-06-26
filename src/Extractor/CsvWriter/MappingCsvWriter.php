@@ -95,14 +95,13 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
                 return;
             }
 
-            $manifestPath = $csvPath . '.manifest';
             $options = new ManifestManager\Options\OutTable\ManifestOptions();
             $options
                 ->setSchema(iterator_to_array($this->getSchema($csvTable)))
                 ->setIncremental($this->config->isIncremental());
 
             $this->manifestManager->writeTableManifest(
-                $manifestPath,
+                $csvTable->getName(),
                 $options,
                 $this->config->getDataTypeSupport()->usingLegacyManifest(),
             );

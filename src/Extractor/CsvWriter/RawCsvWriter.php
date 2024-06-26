@@ -65,14 +65,13 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
     public function writeManifest(): void
     {
         if ($this->rows > 0) {
-            $manifestPath = $this->csvPath . '.manifest';
             $options = new ManifestManager\Options\OutTable\ManifestOptions();
             $options
                 ->setSchema($this->getSchema())
                 ->setIncremental($this->config->isIncremental());
 
             $this->manifestManager->writeTableManifest(
-                $manifestPath,
+                $this->config->getOutput(),
                 $options,
                 $this->config->getDataTypeSupport()->usingLegacyManifest(),
             );
