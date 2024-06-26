@@ -1,4 +1,5 @@
 {
+    "incremental": false,
     "columns": [
         "a",
         "b",
@@ -6,6 +7,36 @@
         "level2-b",
         "output-csv_pk"
     ],
-    "primary_key": [],
-    "incremental": false
+    "column_metadata": {
+        "a": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "b": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "level2-a": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "level2-b": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "output-csv_pk": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ]
+    }
 }

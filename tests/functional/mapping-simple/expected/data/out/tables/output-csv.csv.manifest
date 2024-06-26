@@ -1,9 +1,28 @@
 {
+    "incremental": false,
     "columns": [
         "id",
         "full_name",
         "age"
     ],
-    "primary_key": [],
-    "incremental": false
+    "column_metadata": {
+        "id": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "full_name": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "age": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ]
+    }
 }
