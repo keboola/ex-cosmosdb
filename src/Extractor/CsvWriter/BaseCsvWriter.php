@@ -7,13 +7,10 @@ namespace CosmosDbExtractor\Extractor\CsvWriter;
 use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Exception\UserException;
 use Keboola\Component\JsonHelper;
+use Keboola\Component\Manifest\ManifestManager;
 
 abstract class BaseCsvWriter implements ICsvWriter
 {
-    protected string $dataDir;
-
-    protected Config $config;
-
     /**
      * @var string[]
      */
@@ -21,10 +18,11 @@ abstract class BaseCsvWriter implements ICsvWriter
 
     protected ?object $lastRow = null;
 
-    public function __construct(string $dataDir, Config $config)
-    {
-        $this->dataDir = $dataDir;
-        $this->config = $config;
+    public function __construct(
+        protected readonly string $dataDir,
+        protected readonly Config $config,
+        protected readonly ManifestManager $manifestManager,
+    ) {
         $this->ignoredKeys = $config->getIgnoredKeys();
     }
 

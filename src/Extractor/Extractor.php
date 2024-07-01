@@ -12,6 +12,7 @@ use CosmosDbExtractor\Exception\UserException;
 use CosmosDbExtractor\Extractor\CsvWriter\ICsvWriter;
 use CosmosDbExtractor\Extractor\CsvWriter\MappingCsvWriter;
 use CosmosDbExtractor\Extractor\CsvWriter\RawCsvWriter;
+use Keboola\Component\Manifest\ManifestManager;
 use Psr\Log\LoggerInterface;
 use React\EventLoop\Factory as EventLoopFactory;
 use React\EventLoop\LoopInterface;
@@ -179,11 +180,12 @@ class Extractor
 
     protected function createCsvWriter(): ICsvWriter
     {
+        $manifestManager = new ManifestManager($this->dataDir);
         switch ($this->config->getMode()) {
             case ConfigDefinition::MODE_RAW:
-                return new RawCsvWriter($this->dataDir, $this->config);
+                return new RawCsvWriter($this->dataDir, $this->config, $manifestManager);
             case ConfigDefinition::MODE_MAPPING:
-                return new MappingCsvWriter($this->dataDir, $this->config);
+                return new MappingCsvWriter($this->dataDir, $this->config, $manifestManager);
         }
 
         throw new UnexpectedValueException(sprintf('Unexpected mode "%s".', $this->config->getMode()));

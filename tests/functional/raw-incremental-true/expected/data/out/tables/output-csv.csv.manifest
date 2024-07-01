@@ -1,4 +1,5 @@
 {
+    "incremental": true,
     "columns": [
         "id",
         "data"
@@ -6,5 +7,18 @@
     "primary_key": [
         "id"
     ],
-    "incremental": true
+    "column_metadata": {
+        "id": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": false
+            }
+        ],
+        "data": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ]
+    }
 }

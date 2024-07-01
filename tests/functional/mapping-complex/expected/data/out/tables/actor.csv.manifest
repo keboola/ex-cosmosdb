@@ -1,8 +1,21 @@
 {
+    "incremental": false,
     "columns": [
         "name",
         "movie_pk"
     ],
-    "primary_key": [],
-    "incremental": false
+    "column_metadata": {
+        "name": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "movie_pk": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ]
+    }
 }

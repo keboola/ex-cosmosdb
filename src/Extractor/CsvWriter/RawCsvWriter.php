@@ -7,7 +7,10 @@ namespace CosmosDbExtractor\Extractor\CsvWriter;
 use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Exception\ApplicationException;
 use CosmosDbExtractor\Exception\UserException;
-use Keboola\Component\JsonHelper;
+use Keboola\BigQuery\Extractor\UnloadToCloudStorage\Csv;
+use Keboola\BigQuery\Extractor\Utils\IdGenerator;
+use Keboola\Component\Manifest\ManifestManager;
+use Keboola\Component\Manifest\ManifestManager\Options\OutTable\ManifestOptionsSchema;
 use Keboola\Csv\CsvWriter;
 
 class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
@@ -22,9 +25,9 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
 
     private int $rows = 0;
 
-    public function __construct(string $dataDir, Config $config)
+    public function __construct(string $dataDir, Config $config, ManifestManager $manifestManager)
     {
-        parent::__construct($dataDir, $config);
+        parent::__construct($dataDir, $config, $manifestManager);
         $this->csvPath = sprintf('%s/out/tables/%s.csv', $dataDir, $config->getOutput());
         $this->writer = new CsvWriter($this->csvPath);
     }
@@ -62,20 +65,37 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
     public function writeManifest(): void
     {
         if ($this->rows > 0) {
-            $manifestPath = $this->csvPath . '.manifest';
-            file_put_contents($manifestPath, JsonHelper::encode($this->getManifest(), true));
+            $options = new ManifestManager\Options\OutTable\ManifestOptions();
+            $options
+                ->setSchema($this->getSchema())
+                ->setIncremental($this->config->isIncremental());
+
+            $this->manifestManager->writeTableManifest(
+                $this->config->getOutput().'.csv',
+                $options,
+                $this->config->getDataTypeSupport()->usingLegacyManifest(),
+            );
         }
     }
 
     /**
-     * @return array{columns: array<string>, primary_key: array<string>, incremental: bool}
+     * @return ManifestOptionsSchema[]
      */
-    protected function getManifest(): array
+    protected function getSchema(): array
     {
         return [
-            'columns' => ['id', 'data'],
-            'primary_key' => ['id'],
-            'incremental' => $this->config->isIncremental(),
+            new ManifestOptionsSchema(
+                'id',
+                null,
+                false,
+                true,
+            ),
+            new ManifestOptionsSchema(
+                'data',
+                null,
+                true,
+                false,
+            ),
         ];
     }
 
@@ -92,9 +112,9 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
                     'Please modify the "select" value in the configuration ' .
                     'or use the "mapping" mode instead of the "raw".',
                 );
-            } else {
-                throw new ApplicationException('Missing "id" key in the query results.');
             }
+
+            throw new ApplicationException('Missing "id" key in the query results.');
         }
 
         return (string) $id;

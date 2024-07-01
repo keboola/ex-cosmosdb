@@ -1,0 +1,20 @@
+{
+    "incremental": false,
+    "schema": [
+        {
+            "nullable": true,
+            "primary_key": false,
+            "name": "id"
+        },
+        {
+            "nullable": true,
+            "primary_key": false,
+            "name": "full_name"
+        },
+        {
+            "nullable": true,
+            "primary_key": false,
+            "name": "age"
+        }
+    ]
+}

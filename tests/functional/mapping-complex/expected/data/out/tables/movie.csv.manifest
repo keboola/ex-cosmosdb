@@ -1,4 +1,5 @@
 {
+    "incremental": false,
     "columns": [
         "title-id",
         "release_date",
@@ -8,5 +9,30 @@
     "primary_key": [
         "title-id"
     ],
-    "incremental": false
+    "column_metadata": {
+        "title-id": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "release_date": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "missing": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ],
+        "directors": [
+            {
+                "key": "KBC.datatype.nullable",
+                "value": true
+            }
+        ]
+    }
 }

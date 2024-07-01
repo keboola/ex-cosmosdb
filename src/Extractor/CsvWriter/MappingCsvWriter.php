@@ -7,7 +7,9 @@ namespace CosmosDbExtractor\Extractor\CsvWriter;
 use CosmosDbExtractor\Configuration\Config;
 use CosmosDbExtractor\Exception\ApplicationException;
 use CosmosDbExtractor\Exception\UserException;
-use Keboola\Component\JsonHelper;
+use Generator;
+use Keboola\Component\Manifest\ManifestManager;
+use Keboola\Component\Manifest\ManifestManager\Options\OutTable\ManifestOptionsSchema;
 use Keboola\CsvMap\Exception\CsvMapperException;
 use Keboola\CsvMap\Mapper;
 use Keboola\CsvTable\Table;
@@ -16,9 +18,9 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
 {
     private Mapper $mapper;
 
-    public function __construct(string $dataDir, Config $config)
+    public function __construct(string $dataDir, Config $config, ManifestManager $manifestManager)
     {
-        parent::__construct($dataDir, $config);
+        parent::__construct($dataDir, $config, $manifestManager);
         try {
             $this->mapper = new Mapper($this->config->getMapping(), false, $this->config->getOutput());
         } catch (CsvMapperException $e) {
@@ -62,7 +64,9 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
             $filesize = filesize($source);
             if ($filesize === false) {
                 throw new ApplicationException(sprintf('Failed to get file size "%s".', $source));
-            } elseif ($filesize === 0) {
+            }
+
+            if ($filesize === 0) {
                 // No rows -> no CSV file
                 continue;
             }
@@ -91,23 +95,37 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
                 return;
             }
 
-            $manifestPath = $csvPath . '.manifest';
-            file_put_contents($manifestPath, JsonHelper::encode($this->getManifest($csvTable), true));
+            $options = new ManifestManager\Options\OutTable\ManifestOptions();
+            $options
+                ->setSchema(iterator_to_array($this->getSchema($csvTable)))
+                ->setIncremental($this->config->isIncremental());
+
+            $this->manifestManager->writeTableManifest(
+                $csvTable->getName() . '.csv',
+                $options,
+                $this->config->getDataTypeSupport()->usingLegacyManifest(),
+            );
         }
     }
 
     /**
-     * @return array{columns: array<string>, primary_key: array<string>, incremental: bool}
+     * @return Generator<ManifestOptionsSchema>
      */
-    protected function getManifest(Table $csvTable): array
+    protected function getSchema(Table $csvTable): Generator
     {
         /** @var string[]|null $primaryKey */
         $primaryKey = $csvTable->getPrimaryKey(true);
-        return [
-            'columns' => $csvTable->getHeader(),
-            'primary_key' => $primaryKey ?? [],
-            'incremental' => $this->config->isIncremental(),
-        ];
+        if ($primaryKey === null) {
+            $primaryKey = [];
+        }
+        foreach ($csvTable->getHeader() as $column) {
+            yield new ManifestOptionsSchema(
+                $column,
+                null,
+                true,
+                in_array($column, $primaryKey, true),
+            );
+        }
     }
 
     protected function getCsvTargetPath(Table $csvTable): string
