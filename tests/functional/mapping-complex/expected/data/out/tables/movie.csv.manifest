@@ -14,24 +14,40 @@
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "release_date": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "missing": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "directors": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ]
     }

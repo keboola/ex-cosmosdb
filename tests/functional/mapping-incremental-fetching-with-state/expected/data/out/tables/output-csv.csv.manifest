@@ -10,18 +10,30 @@
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "full_name": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "age": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ]
     }

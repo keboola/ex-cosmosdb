@@ -4,17 +4,32 @@
         {
             "nullable": true,
             "primary_key": false,
-            "name": "id"
+            "name": "id",
+            "data_type": {
+                "base": {
+                    "type": "string"
+                }
+            }
         },
         {
             "nullable": true,
             "primary_key": false,
-            "name": "full_name"
+            "name": "full_name",
+            "data_type": {
+                "base": {
+                    "type": "string"
+                }
+            }
         },
         {
             "nullable": true,
             "primary_key": false,
-            "name": "age"
+            "name": "age",
+            "data_type": {
+                "base": {
+                    "type": "string"
+                }
+            }
         }
     ]
 }

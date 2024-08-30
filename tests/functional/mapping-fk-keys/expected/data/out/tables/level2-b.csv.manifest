@@ -10,18 +10,30 @@
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "itemId": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "level1_pk": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ]
     }

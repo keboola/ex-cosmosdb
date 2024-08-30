@@ -9,12 +9,20 @@
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "movie_pk": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ]
     }
