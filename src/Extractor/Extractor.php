@@ -21,7 +21,7 @@ use UnexpectedValueException;
 
 class Extractor
 {
-    public const LOG_PROGRESS_SECONDS = 30;
+    public const int LOG_PROGRESS_SECONDS = 30;
 
     private LoggerInterface $logger;
 
