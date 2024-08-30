@@ -121,7 +121,7 @@ class MappingCsvWriter extends BaseCsvWriter implements ICsvWriter
         foreach ($csvTable->getHeader() as $column) {
             yield new ManifestOptionsSchema(
                 $column,
-                null,
+                ['base' => ['type' => 'string']],
                 true,
                 in_array($column, $primaryKey, true),
             );
