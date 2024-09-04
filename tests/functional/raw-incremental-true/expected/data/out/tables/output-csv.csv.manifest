@@ -12,12 +12,20 @@
             {
                 "key": "KBC.datatype.nullable",
                 "value": false
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ],
         "data": [
             {
                 "key": "KBC.datatype.nullable",
                 "value": true
+            },
+            {
+                "key": "KBC.datatype.basetype",
+                "value": "string"
             }
         ]
     }

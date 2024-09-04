@@ -66,9 +66,9 @@ Clone this repository and init the workspace with following command:
 ```
 git clone https://github.com/keboola/ex-cosmosdb
 cd ex-cosmosdb
-docker-compose build
-docker-compose run --rm dev composer install --no-scripts
-docker-compose run --rm dev npm install
+docker compose build
+docker compose run --rm dev composer install --no-scripts
+docker compose run --rm dev npm install
 ```
 
 Create `.env` file with following variables:
@@ -82,7 +82,7 @@ DATABASE_ID=
 Run the test suite using this command:
 
 ```
-docker-compose run --rm dev composer tests
+docker compose run --rm dev composer tests
 ```
  
 # Integration

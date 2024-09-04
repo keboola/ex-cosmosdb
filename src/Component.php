@@ -13,8 +13,8 @@ use Psr\Log\LoggerInterface;
 
 class Component extends BaseComponent
 {
-    public const ACTION_RUN = 'run';
-    public const ACTION_TEST_CONNECTION = 'testConnection';
+    public const string ACTION_RUN = 'run';
+    public const string ACTION_TEST_CONNECTION = 'testConnection';
 
     private Extractor $extractor;
 
@@ -67,7 +67,7 @@ class Component extends BaseComponent
 
     protected function getConfigDefinitionClass(): string
     {
-        $action = $this->getRawConfig()['action'] ?? 'run';
-        return $action === 'run' ? ConfigDefinition::class : ActionConfigDefinition::class;
+        $action = $this->getRawConfig()['action'] ?? Component::ACTION_RUN;
+        return $action === Component::ACTION_RUN ? ConfigDefinition::class : ActionConfigDefinition::class;
     }
 }

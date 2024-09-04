@@ -86,13 +86,13 @@ class RawCsvWriter extends BaseCsvWriter implements ICsvWriter
         return [
             new ManifestOptionsSchema(
                 'id',
-                null,
+                ['base' => ['type' => 'string']],
                 false,
                 true,
             ),
             new ManifestOptionsSchema(
                 'data',
-                null,
+                ['base' => ['type' => 'string']],
                 true,
                 false,
             ),
